@@ -1,0 +1,113 @@
+{
+  "securitySystems": [
+    {
+      "id": "sec-1",
+      "name": "Nguyễn Văn An",
+      "role": "Trưởng phòng an ninh",
+      "status": "active",
+      "type": "An ninh con người",
+      "description": "Quản lý tổng thể hệ thống an ninh và bảo vệ",
+      "department": "Phòng An ninh",
+      "contact": "0901234567",
+      "priority": "high",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "sec-2",
+      "name": "Trần Thị Bình",
+      "role": "Nhân viên bảo vệ",
+      "status": "active",
+      "type": "An ninh con người",
+      "description": "Bảo vệ khu vực phòng thí nghiệm và thư viện",
+      "department": "Phòng An ninh",
+      "contact": "0907654321",
+      "priority": "high",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-10T14:20:00Z"
+    },
+    {
+      "id": "sec-3",
+      "name": "Lê Văn Cường",
+      "role": "Nhân viên bảo vệ",
+      "status": "inactive",
+      "type": "An ninh con người",
+      "description": "Bảo vệ tuần tra toàn bộ khuôn viên",
+      "department": "Phòng An ninh",
+      "contact": "0912345678",
+      "priority": "medium",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-12T09:15:00Z"
+    },
+    {
+      "id": "sec-4",
+      "name": "Phạm Thị Dung",
+      "role": "Chuyên viên bảo mật dữ liệu",
+      "status": "active",
+      "type": "Bảo mật dữ liệu",
+      "description": "Quản lý hệ thống mã hóa và bảo vệ dữ liệu nghiên cứu",
+      "department": "Phòng Công nghệ thông tin",
+      "contact": "0923456789",
+      "priority": "high",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-08T16:45:00Z"
+    },
+    {
+      "id": "sec-5",
+      "name": "Hoàng Văn Em",
+      "role": "Quản trị viên hệ thống",
+      "status": "active",
+      "type": "Bảo mật dữ liệu",
+      "description": "Quản lý quyền truy cập vào hệ thống thông tin",
+      "department": "Phòng Công nghệ thông tin",
+      "contact": "0934567890",
+      "priority": "high",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-14T11:30:00Z"
+    },
+    {
+      "id": "sec-6",
+      "name": "Vũ Thị Phương",
+      "role": "Chuyên viên an ninh mạng",
+      "status": "warning",
+      "type": "Bảo mật dữ liệu",
+      "description": "Theo dõi và phát hiện các mối đe dọa mạng",
+      "department": "Phòng Công nghệ thông tin",
+      "contact": "0945678901",
+      "priority": "high",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-05T13:20:00Z"
+    },
+    {
+      "id": "sec-7",
+      "name": "Đặng Văn Giang",
+      "role": "Nhân viên bảo vệ",
+      "status": "active",
+      "type": "An ninh con người",
+      "description": "Bảo vệ đặc biệt vào cuối tuần và ngày lễ",
+      "department": "Phòng An ninh",
+      "contact": "0956789012",
+      "priority": "medium",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-18T08:45:00Z"
+    },
+    {
+      "id": "sec-8",
+      "name": "Bùi Thị Hoa",
+      "role": "Chuyên viên sao lưu dữ liệu",
+      "status": "active",
+      "type": "Bảo mật dữ liệu",
+      "description": "Quản lý hệ thống sao lưu và khôi phục dữ liệu",
+      "department": "Phòng Công nghệ thông tin",
+      "contact": "0967890123",
+      "priority": "medium",
+      "createdAt": "2023-06-01T00:00:00Z",
+      "updatedAt": "2024-01-16T15:10:00Z"
+    }
+  ],
+  "total": 8,
+  "active": 6,
+  "inactive": 1,
+  "warning": 1,
+  "offline": 0
+}

@@ -1,0 +1,99 @@
+{
+  "labs": [
+    {
+      "id": "1",
+      "roomName": "Phòng thí nghiệm Hóa học",
+      "roomCode": "CHEM-101",
+      "capacity": 20,
+      "status": "available",
+      "manager": {
+        "id": "1",
+        "name": "Nguyễn Văn An",
+        "email": "nguyen.van.an@university.edu.vn",
+        "phone": "0123456789",
+        "department": "Khoa Hóa học"
+      },
+      "location": "Tầng 1, Tòa nhà A",
+      "description": "Phòng thí nghiệm chuyên dụng cho các thí nghiệm hóa học cơ bản và nâng cao",
+      "equipment": ["Kính hiển vi", "Bếp Bunsen", "Thiết bị an toàn", "Tủ hút khí độc"],
+      "createdAt": "2024-01-15T08:00:00Z",
+      "updatedAt": "2024-01-20T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "roomName": "Phòng thí nghiệm Vật lý",
+      "roomCode": "PHYS-203",
+      "capacity": 15,
+      "status": "occupied",
+      "manager": {
+        "id": "2",
+        "name": "Trần Thị Bình",
+        "email": "tran.thi.binh@university.edu.vn",
+        "phone": "0987654321",
+        "department": "Khoa Vật lý"
+      },
+      "location": "Tầng 2, Tòa nhà B",
+      "description": "Phòng thí nghiệm vật lý với các thiết bị đo lường hiện đại",
+      "equipment": ["Dao động ký", "Nguồn điện", "Dụng cụ đo lường", "Máy tính"],
+      "createdAt": "2024-01-10T09:00:00Z",
+      "updatedAt": "2024-01-22T14:15:00Z"
+    },
+    {
+      "id": "3",
+      "roomName": "Phòng thí nghiệm Sinh học",
+      "roomCode": "BIO-105",
+      "capacity": 25,
+      "status": "maintenance",
+      "manager": {
+        "id": "3",
+        "name": "Lê Văn Cường",
+        "email": "le.van.cuong@university.edu.vn",
+        "phone": "0369258147",
+        "department": "Khoa Sinh học"
+      },
+      "location": "Tầng 1, Tòa nhà C",
+      "description": "Phòng thí nghiệm sinh học với hệ thống nuôi cấy và phân tích",
+      "equipment": ["Kính hiển vi", "Tủ ấm", "Máy ly tâm", "Tủ lạnh"],
+      "createdAt": "2024-01-05T07:30:00Z",
+      "updatedAt": "2024-01-25T16:45:00Z"
+    },
+    {
+      "id": "4",
+      "roomName": "Phòng máy tính",
+      "roomCode": "COMP-301",
+      "capacity": 30,
+      "status": "available",
+      "manager": {
+        "id": "4",
+        "name": "Phạm Thị Dung",
+        "email": "pham.thi.dung@university.edu.vn",
+        "phone": "0741852963",
+        "department": "Khoa Công nghệ thông tin"
+      },
+      "location": "Tầng 3, Tòa nhà A",
+      "description": "Phòng máy tính với hệ thống mạng và phần mềm chuyên dụng",
+      "equipment": ["Máy tính", "Máy chiếu", "Thiết bị mạng", "Máy in"],
+      "createdAt": "2024-01-12T11:00:00Z",
+      "updatedAt": "2024-01-18T13:20:00Z"
+    },
+    {
+      "id": "5",
+      "roomName": "Phòng thí nghiệm Điện tử",
+      "roomCode": "ELEC-205",
+      "capacity": 18,
+      "status": "available",
+      "manager": {
+        "id": "5",
+        "name": "Hoàng Văn Em",
+        "email": "hoang.van.em@university.edu.vn",
+        "phone": "0852741963",
+        "department": "Khoa Điện tử"
+      },
+      "location": "Tầng 2, Tòa nhà C",
+      "description": "Phòng thí nghiệm điện tử với các thiết bị đo và mạch điện",
+      "equipment": ["Máy đo tần số", "Oscilloscope", "Breadboard", "Nguồn DC"],
+      "createdAt": "2024-01-08T10:15:00Z",
+      "updatedAt": "2024-01-19T09:30:00Z"
+    }
+  ]
+}
