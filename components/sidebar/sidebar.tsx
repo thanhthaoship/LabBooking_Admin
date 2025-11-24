@@ -29,8 +29,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: LayoutDashboardIcon,
       },
       {
-        title: 'Quản lý phòng thí nghiệm',
-        url: '/labs',
+        title: 'Quản lý phòng lab',
+        url: '/(dashboard)/lab-rooms',
+        icon: House,
+      },
+      {
+        title: 'Quản lý thiết bị',
+        url: '/(dashboard)/equipments',
         icon: House,
       },
       {
