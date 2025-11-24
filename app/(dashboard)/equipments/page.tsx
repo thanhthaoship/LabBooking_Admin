@@ -10,6 +10,7 @@ import { Plus, Search } from 'lucide-react'
 import { useEquipmentsList } from '@/hooks/useEquipmentsApi'
 import { EquipmentFormDialog } from '@/components/equipments/EquipmentFormDialog'
 import { EquipmentTable } from '@/components/equipments/EquipmentTable'
+import { SiteHeader } from '@/components/sidebar/site-header'
 
 export default function EquipmentsPage() {
   const [searchPhrase, setSearchPhrase] = useState('')
@@ -21,12 +22,14 @@ export default function EquipmentsPage() {
   const { data, isLoading } = useEquipmentsList({ searchPhrase, pageNumber, pageSize, sortBy, sortDirection })
 
   return (
-    <div className="px-6 py-6">
+    <>
+    <SiteHeader title="QUẢN LÝ THIẾT BỊ" />
+    <div className="px-6 py-6 bg-[#FBE8D2]">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-orange-600">Quản lý thiết bị</CardTitle>
+          <CardTitle className="text-orange-600 uppercase tracking-wide">Quản lý thiết bị</CardTitle>
           <EquipmentFormDialog>
-            <Button className="bg-orange-500 hover:bg-orange-600">
+            <Button className="bg-primary hover:bg-primary/90">
               <Plus className="mr-2 h-4 w-4" /> Thêm thiết bị
             </Button>
           </EquipmentFormDialog>
@@ -60,5 +63,6 @@ export default function EquipmentsPage() {
         </CardContent>
       </Card>
     </div>
+    </>
   )
 }

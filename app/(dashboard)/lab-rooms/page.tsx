@@ -10,6 +10,7 @@ import { Plus, Search } from 'lucide-react'
 import { useLabRoomsList } from '@/hooks/useLabRoomsApi'
 import { LabRoomFormDialog } from '@/components/lab-rooms/LabRoomFormDialog'
 import { LabRoomTable } from '@/components/lab-rooms/LabRoomTable'
+import { SiteHeader } from '@/components/sidebar/site-header'
 
 export default function LabRoomsPage() {
   const [searchPhrase, setSearchPhrase] = useState('')
@@ -21,12 +22,14 @@ export default function LabRoomsPage() {
   const { data, isLoading } = useLabRoomsList({ searchPhrase, pageNumber, pageSize, sortBy, sortDirection })
 
   return (
-    <div className="px-6 py-6">
+    <>
+    <SiteHeader title="QUẢN LÝ PHÒNG LAB" />
+    <div className="px-6 py-6 bg-[#FBE8D2]">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-orange-600">Quản lý phòng lab</CardTitle>
+          <CardTitle className="text-orange-600 uppercase tracking-wide">Quản lý phòng lab</CardTitle>
           <LabRoomFormDialog>
-            <Button className="bg-orange-500 hover:bg-orange-600">
+            <Button className="bg-primary hover:bg-primary/90">
               <Plus className="mr-2 h-4 w-4" /> Thêm phòng Lab
             </Button>
           </LabRoomFormDialog>
@@ -60,5 +63,6 @@ export default function LabRoomsPage() {
         </CardContent>
       </Card>
     </div>
+    </>
   )
 }

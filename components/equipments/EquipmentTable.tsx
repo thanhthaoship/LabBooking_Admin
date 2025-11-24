@@ -9,8 +9,8 @@ import { DeleteEquipmentDialog } from './DeleteEquipmentDialog'
 export function EquipmentTable({ items, loading }: { items: EquipmentResponse[]; loading: boolean }) {
   if (loading) return <div className="py-10 text-center">Đang tải...</div>
   return (
-    <div className="rounded-lg overflow-hidden border">
-      <div className="grid grid-cols-6 bg-orange-500 text-white px-4 py-2 text-sm">
+    <div className="rounded-lg overflow-hidden">
+      <div className="grid grid-cols-6 bg-primary text-primary-foreground rounded-full mx-2 my-2 px-4 py-2 text-sm">
         <div>Tên thiết bị</div>
         <div>Mô tả</div>
         <div>Trạng thái</div>
@@ -18,9 +18,9 @@ export function EquipmentTable({ items, loading }: { items: EquipmentResponse[];
         <div>Phòng Lab</div>
         <div></div>
       </div>
-      <ul className="divide-y">
+      <ul className="space-y-3">
         {items.map(item => (
-          <li key={item.id} className="grid grid-cols-6 items-center px-4 py-3">
+          <li key={item.id} className="grid grid-cols-6 items-center px-4 py-3 rounded-lg border bg-white">
             <div className="font-medium">{item.equipmentName}</div>
             <div className="text-muted-foreground truncate">{item.description || 'Không có'}</div>
             <div><Badge variant="outline">{item.status}</Badge></div>

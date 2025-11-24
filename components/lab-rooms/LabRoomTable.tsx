@@ -10,8 +10,8 @@ import { DeleteLabRoomDialog } from './DeleteLabRoomDialog'
 export function LabRoomTable({ items, loading }: { items: LabRoomResponse[]; loading: boolean }) {
   if (loading) return <div className="py-10 text-center">Đang tải...</div>
   return (
-    <div className="rounded-lg overflow-hidden border">
-      <div className="grid grid-cols-7 bg-orange-500 text-white px-4 py-2 text-sm">
+    <div className="rounded-lg overflow-hidden">
+      <div className="grid grid-cols-7 bg-primary text-primary-foreground rounded-full mx-2 my-2 px-4 py-2 text-sm">
         <div>Tên phòng</div>
         <div>Mã phòng</div>
         <div>Sức chứa</div>
@@ -20,9 +20,9 @@ export function LabRoomTable({ items, loading }: { items: LabRoomResponse[]; loa
         <div>Thiết bị</div>
         <div></div>
       </div>
-      <ul className="divide-y">
+      <ul className="space-y-3">
         {items.map(item => (
-          <li key={item.id} className="grid grid-cols-7 items-center px-4 py-3">
+          <li key={item.id} className="grid grid-cols-7 items-center px-4 py-3 rounded-lg border bg-white">
             <div className="font-medium">{item.labName || 'Chưa đặt tên'}</div>
             <div className="text-muted-foreground">{`LAB-${item.id.substring(0, 4).toUpperCase()}`}</div>
             <div>{item.maximumLimit ?? 0}</div>
@@ -32,7 +32,7 @@ export function LabRoomTable({ items, loading }: { items: LabRoomResponse[]; loa
             <div className="truncate">{item.mainManagerId ?? 'Chưa cập nhật'}</div>
             <div>{item.equipments?.length ?? 0}</div>
             <div className="flex justify-end gap-2">
-              <Link href={`/(dashboard)/lab-rooms/${item.id}`} className="text-orange-600 hover:underline">Xem</Link>
+              <Link href={`/(dashboard)/lab-rooms/${item.id}`} className="text-primary hover:underline">Xem</Link>
               <UpdateLabRoomDialog labRoom={item}>
                 <Button variant="outline" size="sm">Sửa</Button>
               </UpdateLabRoomDialog>
