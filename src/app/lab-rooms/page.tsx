@@ -33,6 +33,7 @@ import {
   PagedResult,
 } from "../../lib/types";
 import { getLabRooms } from "../../lib/services/api";
+import LabRoomDialogForm from "./components/LabRoomDialogForm";
 
 function useDebounced<T>(value: T, delay: number): T {
   const [v, setV] = useState(value);
@@ -57,6 +58,10 @@ export default function LabRoomsPage() {
   const [data, setData] = useState<PagedResult<LabRoomResponse> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editing, setEditing] = useState<LabRoomResponse | null>(null);
+  const [refreshSeq, setRefreshSeq] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -93,7 +98,7 @@ export default function LabRoomsPage() {
     return () => {
       active = false;
     };
-  }, [query]);
+  }, [query, refreshSeq]);
 
   const handleSortClick = (field: "LabName" | "Location" | "CreatedDate") => {
     if (sortBy === field) {
@@ -140,8 +145,7 @@ export default function LabRoomsPage() {
             sx={{ minWidth: { xs: 180, md: 280 }, bgcolor: "background.paper" }}
           />
           <Button
-            component={Link}
-            href="/lab-rooms/create"
+            onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
           >
@@ -174,67 +178,47 @@ export default function LabRoomsPage() {
             >
               <Table aria-label="Danh sách phòng lab">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main", color: "black" }}>
+                  <TableRow
+                    sx={{
+                      bgcolor: "primary.main",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "primary.main",
+                      },
+                    }}
+                  >
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
-                      <TableSortLabel
-                        active={sortBy === "LabName"}
-                        direction={
-                          sortDirection === "Ascending" ? "asc" : "desc"
-                        }
-                        onClick={() => handleSortClick("LabName")}
-                        sx={{
-                          color: "secondary.contrastText",
-                          "& .MuiTableSortLabel-icon": {
-                            color: "primary.contrastText",
-                          },
-                        }}
-                      >
-                        Tên phòng
-                      </TableSortLabel>
+                      Tên phòng
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
                       Mã phòng
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
                       Sức chứa
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
-                      <TableSortLabel
-                        active={sortBy === "CreatedDate"}
-                        direction={
-                          sortDirection === "Ascending" ? "asc" : "desc"
-                        }
-                        onClick={() => handleSortClick("CreatedDate")}
-                        sx={{
-                          color: "secondary.contrastText",
-                          "& .MuiTableSortLabel-icon": {
-                            color: "secondary.contrastText",
-                          },
-                        }}
-                      >
-                        Trạng thái
-                      </TableSortLabel>
+                      Trạng thái
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
                       Người quản lý
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
                       Thiết bị
                     </TableCell>
                     <TableCell
-                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     />
                   </TableRow>
                 </TableHead>
@@ -278,6 +262,16 @@ export default function LabRoomsPage() {
                             size="small"
                           >
                             Xem
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              setEditing(room);
+                              setEditOpen(true);
+                            }}
+                            size="small"
+                            sx={{ ml: 1 }}
+                          >
+                            Sửa
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -348,6 +342,16 @@ export default function LabRoomsPage() {
                           >
                             Xem
                           </Button>
+                          <Button
+                            onClick={() => {
+                              setEditing(room);
+                              setEditOpen(true);
+                            }}
+                            size="small"
+                            sx={{ ml: 1 }}
+                          >
+                            Sửa
+                          </Button>
                         </Box>
                       </Stack>
                     </CardContent>
@@ -375,6 +379,23 @@ export default function LabRoomsPage() {
           </Box>
         </>
       )}
+      <LabRoomDialogForm
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        mode="create"
+        initial={null}
+        onSaved={() => setRefreshSeq((s) => s + 1)}
+      />
+      <LabRoomDialogForm
+        open={editOpen}
+        onClose={() => {
+          setEditOpen(false);
+          setEditing(null);
+        }}
+        mode="edit"
+        initial={editing ?? undefined}
+        onSaved={() => setRefreshSeq((s) => s + 1)}
+      />
     </Box>
   );
 }

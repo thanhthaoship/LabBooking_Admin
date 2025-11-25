@@ -1,19 +1,10 @@
-import {
-  defaultErrorMessage,
-  defaultSuccessMessage,
-} from "@/config/labels/error";
-import { IResponse } from "@/config/types";
 import { useSnackbar } from "notistack";
 
 export function useNotification() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const showNotification = (response: IResponse) => {
-    const defaultMessage = response.success
-      ? defaultSuccessMessage
-      : defaultErrorMessage;
-
-    enqueueSnackbar(response.message || defaultMessage, {
+  const showNotification = (response: any) => {
+    enqueueSnackbar(response.message, {
       variant: response.success ? "success" : "error",
     });
   };
