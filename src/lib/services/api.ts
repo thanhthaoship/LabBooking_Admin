@@ -20,6 +20,10 @@ import {
   GetAllUsagePoliciesQuery,
   CreateUsagePolicyCommand,
   UpdateUsagePolicyCommand,
+  EquipmentResponse,
+  GetAllEquipmentsQuery,
+  CreateEquipmentCommand,
+  UpdateEquipmentCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -77,6 +81,13 @@ function usagePoliciesRoot(): string {
   if (!base) return "/api/UsagePolicies";
   if (base.endsWith("/api")) return `${base}/UsagePolicies`;
   return `${base}/api/UsagePolicies`;
+}
+
+function equipmentsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Equipments";
+  if (base.endsWith("/api")) return `${base}/Equipments`;
+  return `${base}/api/Equipments`;
 }
 
 function toQueryString(
@@ -376,4 +387,78 @@ export async function updateUsagePolicy(
 
 export async function deleteUsagePolicy(id: string): Promise<void> {
   await request<void>(`${usagePoliciesRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function getEquipments(
+  query: GetAllEquipmentsQuery
+): Promise<PagedResult<EquipmentResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<EquipmentResponse>>(
+    `${equipmentsRoot()}?${qs.toString()}`
+  );
+}
+
+export async function getEquipment(id: string): Promise<EquipmentResponse> {
+  return request<EquipmentResponse>(`${equipmentsRoot()}/${id}`);
+}
+
+export async function createEquipment(
+  payload: CreateEquipmentCommand
+): Promise<string | null> {
+  const res = await fetch(equipmentsRoot(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get("Location");
+  if (!location) return null;
+  const id = location.split("/").filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateEquipment(
+  id: string,
+  payload: UpdateEquipmentCommand
+): Promise<void> {
+  await request<void>(`${equipmentsRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteEquipment(id: string): Promise<void> {
+  await request<void>(`${equipmentsRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function moveEquipment(
+  id: string,
+  newLabRoomId: string
+): Promise<void> {
+  const current = await getEquipment(id);
+  const payload: UpdateEquipmentCommand = {
+    equipmentName: current.equipmentName,
+    description: current.description ?? null,
+    isAvailable: current.isAvailable,
+    labRoomId: newLabRoomId,
+    status: current.status,
+  };
+  await updateEquipment(id, payload);
 }

@@ -9,7 +9,7 @@ export interface EquipmentResponse {
   description?: string | null;
   isAvailable: boolean;
   labRoomId: GuidString;
-  status: string;
+  status: EquipmentStatus;
 }
 
 export interface LabRoomResponse {
@@ -185,4 +185,28 @@ export interface UpdateUsagePolicyCommand {
   effectiveFrom?: string | null;
   expirationDate?: string | null;
   isActive: boolean;
+}
+
+export type EquipmentStatus = "Maintain" | "Available" | "Broken" | "Other";
+
+export interface GetAllEquipmentsQuery {
+  searchPhrase?: string;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "EquipmentName" | "Status" | "IsAvailable" | "LabRoomId";
+  sortDirection: SortDirection;
+}
+
+export interface CreateEquipmentCommand {
+  equipmentName: string;
+  description?: string | null;
+  labRoomId: GuidString;
+}
+
+export interface UpdateEquipmentCommand {
+  equipmentName: string;
+  description?: string | null;
+  isAvailable: boolean;
+  labRoomId: GuidString;
+  status: EquipmentStatus;
 }

@@ -34,6 +34,12 @@ export const navigationGroups: NavigationGroup[] = [
         path: "/lab-rooms",
       },
       {
+        name: "Thiết bị",
+        icon: duotone.Seller,
+        pathSegment: "equipments",
+        path: "/equipments",
+      },
+      {
         name: "Cấu hình Slot",
         icon: duotone.Calender,
         pathSegment: "slots",
@@ -41,7 +47,7 @@ export const navigationGroups: NavigationGroup[] = [
       },
       {
         name: "Hỗ trợ",
-        icon: duotone.Chat,
+        icon: duotone.ProjectChart,
         pathSegment: "supports",
         path: "/supports",
       },
