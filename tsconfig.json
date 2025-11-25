@@ -1,0 +1,81 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es2020", // Specify ECMAScript target version
+    "module": "esnext", // Specify module code generation
+    "lib": [
+      // Specify library files to be included in the compilation
+      "es2020",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "jsx": "preserve", // Preserve JSX for Next.js
+    /* Module Resolution Options */
+    "moduleResolution": "node", // Use bundler for module resolution
+    "moduleDetection": "force", // Force module detection
+    "resolveJsonModule": true, // Enable importing .json files
+    "esModuleInterop": true, // Enable interoperability between CommonJS and ES Modules
+    "isolatedModules": true, // Ensure each file can be safely transpiled
+    /* JavaScript Support */
+    "allowJs": true, // Allow JavaScript files to be compiled
+    "skipLibCheck": true, // Skip type checking of declaration files
+    /* Build Options */
+    "noEmit": true, // Do not emit outputs (Next.js handles this)
+    "incremental": true, // Enable incremental compilation
+    "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+    /* Type Checking */
+    "strict": false, // Disable all strict type-checking options
+    "noUnusedLocals": true, // Report errors on unused locals
+    "noUnusedParameters": true, // Report errors on unused parameters
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@contexts/*": [
+        "src/contexts/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@theme/*": [
+        "src/theme/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@animations/*": [
+        "src/animations/*"
+      ],
+      "@pages-sections/*": [
+        "src/pages-sections/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+, "next.config.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

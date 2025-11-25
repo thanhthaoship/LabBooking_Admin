@@ -1,0 +1,16 @@
+(globalThis.TURBOPACK = globalThis.TURBOPACK || []).push([
+    "static/chunks/src_app_admin_categories_create_page_tsx_87b02fa5._.js",
+    {},
+]);
+(globalThis.TURBOPACK_CHUNK_LISTS = globalThis.TURBOPACK_CHUNK_LISTS || []).push({
+  "path": "static/chunks/src_app_admin_categories_create_page_tsx_87b02fa5._.js",
+  "chunks": [
+    "static/chunks/node_modules_@mui_material_caf3df24._.js",
+    "static/chunks/node_modules_zod_lib_index_mjs_ee760afb._.js",
+    "static/chunks/node_modules_lodash-es_7674a655._.js",
+    "static/chunks/node_modules_next_f5074bf6._.js",
+    "static/chunks/node_modules_98fd420e._.js",
+    "static/chunks/src_624c3c45._.js"
+  ],
+  "source": "dynamic"
+});
