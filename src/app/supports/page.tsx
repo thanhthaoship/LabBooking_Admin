@@ -1,45 +1,42 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import {
-  Box,
-  Stack,
-  Typography,
-  TextField,
-  InputAdornment,
-  Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Paper,
-  Chip,
-  Skeleton,
-  Alert,
-  useMediaQuery,
-  Card,
-  CardContent,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useTheme } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
 import {
-  CreateSupportCommand,
-  GetAllSupportsQuery,
-  SupportsResponse,
-} from "../../lib/types";
-import { deleteSupport, getSupports } from "../../lib/services/api";
-import SupportDialogForm from "./components/SupportDialogForm";
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  InputAdornment,
+  MenuItem,
+  Paper,
+  Skeleton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useEffect, useMemo, useState } from "react";
 import EmptyState from "../../components/EmptyState";
 import duotone from "../../components/icons/duotone";
+import { deleteSupport, getSupports } from "../../lib/services/api";
+import { GetAllSupportsQuery, SupportsResponse } from "../../lib/types";
+import SupportDialogForm from "./components/SupportDialogForm";
 
 export default function SupportsPage() {
   const [search, setSearch] = useState("");
@@ -135,8 +132,9 @@ export default function SupportsPage() {
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        spacing={1}
         justifyContent="space-between"
         sx={{ mb: 3 }}
       >
@@ -180,6 +178,7 @@ export default function SupportsPage() {
             onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
+            startIcon={<AddCircleOutlineIcon />}
           >
             Thêm hỗ trợ
           </Button>
@@ -401,10 +400,18 @@ export default function SupportsPage() {
         <DialogTitle>Xóa hỗ trợ</DialogTitle>
         <DialogContent>Bạn có chắc chắn muốn xóa hỗ trợ này?</DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDelete({ open: false, id: null })}>
+          <Button
+            onClick={() => setConfirmDelete({ open: false, id: null })}
+            startIcon={<CloseIcon />}
+          >
             Hủy
           </Button>
-          <Button onClick={handleDelete} color="error" variant="contained">
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            startIcon={<DeleteOutlineIcon />}
+          >
             Xóa
           </Button>
         </DialogActions>

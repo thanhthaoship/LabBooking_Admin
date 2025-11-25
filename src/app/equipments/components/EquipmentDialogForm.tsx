@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, MenuItem, Switch, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { CreateEquipmentCommand, EquipmentStatus, GetAllLabRoomsQuery, LabRoomResponse, PagedResult, UpdateEquipmentCommand, EquipmentResponse } from '../../../lib/types';
 import { createEquipment, getLabRooms, updateEquipment } from '../../../lib/services/api';
 
@@ -130,8 +133,8 @@ export default function EquipmentDialogForm({ open, onClose, mode, initial, onSa
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Hủy</Button>
-        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary">{mode === 'create' ? 'Tạo' : 'Lưu'}</Button>
+        <Button onClick={onClose} startIcon={<CloseIcon />}>Hủy</Button>
+        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary" startIcon={mode === 'create' ? <AddCircleOutlineIcon /> : <SaveIcon />}>{mode === 'create' ? 'Tạo' : 'Lưu'}</Button>
       </DialogActions>
     </Dialog>
   );

@@ -17,6 +17,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {
   CreateLabRoomCommand,
   LabRoomResponse,
@@ -240,22 +243,13 @@ export default function LabRoomDialogForm({
 
       {/* Actions */}
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button
-          onClick={onClose}
-          color="inherit"
-          sx={{ textTransform: "none" }}
-        >
-          Hủy
-        </Button>
+        <Button onClick={onClose} color="inherit" sx={{ textTransform: "none" }} startIcon={<CloseIcon />}>Hủy</Button>
         <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
           variant="contained"
-          sx={{
-            textTransform: "none",
-            px: 3,
-            borderRadius: 2,
-          }}
+          sx={{ textTransform: "none", px: 3, borderRadius: 2 }}
+          startIcon={mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />}
         >
           {mode === "create" ? "Tạo mới" : "Lưu thay đổi"}
         </Button>

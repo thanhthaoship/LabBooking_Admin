@@ -29,6 +29,12 @@ import {
   Skeleton,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DriveFileMoveOutlinedIcon from "@mui/icons-material/DriveFileMoveOutlined";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useTheme } from "@mui/material/styles";
 import EquipmentDialogForm from "./components/EquipmentDialogForm";
 import {
@@ -168,10 +174,10 @@ export default function EquipmentsPage() {
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
       <Stack
-        direction="row"
-        alignItems="center"
         justifyContent="space-between"
         sx={{ mb: 3 }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        direction={{ xs: "column", md: "row" }}
       >
         <Typography
           variant="h5"
@@ -179,7 +185,11 @@ export default function EquipmentsPage() {
         >
           Quản lý thiết bị
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems={{ xs: "flex-start", md: "center" }}
+        >
           <TextField
             size="small"
             placeholder="Tìm thiết bị"
@@ -239,6 +249,7 @@ export default function EquipmentsPage() {
             onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
+            startIcon={<AddCircleOutlineIcon />}
           >
             Thêm thiết bị
           </Button>
@@ -391,6 +402,7 @@ export default function EquipmentsPage() {
                             setEditing(eq);
                             setEditOpen(true);
                           }}
+                          startIcon={<EditOutlinedIcon />}
                         >
                           Sửa
                         </Button>
@@ -401,6 +413,7 @@ export default function EquipmentsPage() {
                             setMoveId(eq.id);
                             setMoveTargetLab(eq.labRoomId);
                           }}
+                          startIcon={<DriveFileMoveOutlinedIcon />}
                         >
                           Chuyển phòng
                         </Button>
@@ -409,6 +422,7 @@ export default function EquipmentsPage() {
                           sx={{ ml: 1 }}
                           color="error"
                           onClick={() => setConfirmId(eq.id)}
+                          startIcon={<DeleteOutlineIcon />}
                         >
                           Xóa
                         </Button>
@@ -469,6 +483,7 @@ export default function EquipmentsPage() {
                           setEditing(eq);
                           setEditOpen(true);
                         }}
+                        startIcon={<EditOutlinedIcon />}
                       >
                         Sửa
                       </Button>
@@ -479,6 +494,7 @@ export default function EquipmentsPage() {
                           setMoveId(eq.id);
                           setMoveTargetLab(eq.labRoomId);
                         }}
+                        startIcon={<DriveFileMoveOutlinedIcon />}
                       >
                         Chuyển phòng
                       </Button>
@@ -487,6 +503,7 @@ export default function EquipmentsPage() {
                         sx={{ ml: 1 }}
                         color="error"
                         onClick={() => setConfirmId(eq.id)}
+                        startIcon={<DeleteOutlineIcon />}
                       >
                         Xóa
                       </Button>
@@ -546,9 +563,12 @@ export default function EquipmentsPage() {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmId(null)}>Hủy</Button>
+          <Button onClick={() => setConfirmId(null)} startIcon={<CloseIcon />}>
+            Hủy
+          </Button>
           <Button
             color="error"
+            startIcon={<DeleteOutlineIcon />}
             onClick={async () => {
               if (!confirmId) return;
               try {
@@ -592,9 +612,12 @@ export default function EquipmentsPage() {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setMoveId(null)}>Hủy</Button>
+          <Button onClick={() => setMoveId(null)} startIcon={<CloseIcon />}>
+            Hủy
+          </Button>
           <Button
             variant="contained"
+            startIcon={<ArrowForwardIcon />}
             onClick={async () => {
               if (!moveId || !moveTargetLab) return;
               try {

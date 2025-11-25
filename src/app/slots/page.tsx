@@ -29,6 +29,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { useTheme } from "@mui/material/styles";
@@ -115,8 +117,9 @@ export default function SlotsPage() {
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        spacing={1}
         justifyContent="space-between"
         sx={{ mb: 3 }}
       >
@@ -126,7 +129,11 @@ export default function SlotsPage() {
         >
           Cấu hình Slot
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          alignItems={{ xs: "flex-start", md: "center" }}
+          spacing={2}
+        >
           <TextField
             size="small"
             placeholder="Tìm slot"
@@ -147,6 +154,7 @@ export default function SlotsPage() {
             onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
+            startIcon={<AddCircleOutlineIcon />}
           >
             Thêm Slot
           </Button>
@@ -366,10 +374,18 @@ export default function SlotsPage() {
         <DialogTitle>Xóa slot</DialogTitle>
         <DialogContent>Bạn có chắc chắn muốn xóa slot này?</DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDelete({ open: false, id: null })}>
+          <Button
+            onClick={() => setConfirmDelete({ open: false, id: null })}
+            startIcon={<CloseIcon />}
+          >
             Hủy
           </Button>
-          <Button onClick={handleDelete} color="error" variant="contained">
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            startIcon={<DeleteOutlineIcon />}
+          >
             Xóa
           </Button>
         </DialogActions>

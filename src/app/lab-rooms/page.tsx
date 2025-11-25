@@ -26,6 +26,9 @@ import {
   CardContent,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { useTheme } from "@mui/material/styles";
 import {
   GetAllLabRoomsQuery,
@@ -116,10 +119,11 @@ export default function LabRoomsPage() {
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
       <Stack
-        direction="row"
-        alignItems="center"
+        alignItems={{ xs: "flex-start", md: "center" }}
+        direction={{ xs: "column", md: "row" }}
         justifyContent="space-between"
         sx={{ mb: 3 }}
+        spacing={1}
       >
         <Typography
           variant="h5"
@@ -127,7 +131,11 @@ export default function LabRoomsPage() {
         >
           Quản lý phòng Lab
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems={{ xs: "flex-start", md: "center" }}
+        >
           <TextField
             size="small"
             placeholder="Tìm phòng lab"
@@ -150,6 +158,7 @@ export default function LabRoomsPage() {
             onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
+            startIcon={<AddCircleOutlineIcon />}
           >
             Thêm phòng Lab
           </Button>
@@ -272,6 +281,7 @@ export default function LabRoomsPage() {
                             component={Link}
                             href={`/lab-rooms/${room.id}`}
                             size="small"
+                            startIcon={<VisibilityOutlinedIcon />}
                           >
                             Xem
                           </Button>
@@ -282,6 +292,7 @@ export default function LabRoomsPage() {
                             }}
                             size="small"
                             sx={{ ml: 1 }}
+                            startIcon={<EditOutlinedIcon />}
                           >
                             Sửa
                           </Button>
@@ -351,6 +362,7 @@ export default function LabRoomsPage() {
                             component={Link}
                             href={`/lab-rooms/${room.id}`}
                             size="small"
+                            startIcon={<VisibilityOutlinedIcon />}
                           >
                             Xem
                           </Button>
@@ -361,6 +373,7 @@ export default function LabRoomsPage() {
                             }}
                             size="small"
                             sx={{ ml: 1 }}
+                            startIcon={<EditOutlinedIcon />}
                           >
                             Sửa
                           </Button>

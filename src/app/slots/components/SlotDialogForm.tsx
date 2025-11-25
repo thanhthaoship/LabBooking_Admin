@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { CreateSlotCommand, SlotResponse, UpdateSlotCommand } from '../../../lib/types';
 import { createSlot, updateSlot } from '../../../lib/services/api';
 
@@ -142,8 +145,8 @@ export default function SlotDialogForm({ open, onClose, mode, initial, onSaved, 
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Hủy</Button>
-        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary">{mode === 'create' ? 'Tạo' : 'Lưu'}</Button>
+        <Button onClick={onClose} startIcon={<CloseIcon />}>Hủy</Button>
+        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary" startIcon={mode === 'create' ? <AddCircleOutlineIcon /> : <SaveIcon />}>{mode === 'create' ? 'Tạo' : 'Lưu'}</Button>
       </DialogActions>
     </Dialog>
   );

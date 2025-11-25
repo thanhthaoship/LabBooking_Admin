@@ -1,30 +1,59 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@mui/material';
-import { CreateSupportCommand, SupportsResponse, UpdateSupportCommand } from '../../../lib/types';
-import { createSupport, updateSupport } from '../../../lib/services/api';
+import { useEffect, useMemo, useState } from "react";
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {
+  CreateSupportCommand,
+  SupportsResponse,
+  UpdateSupportCommand,
+} from "../../../lib/types";
+import { createSupport, updateSupport } from "../../../lib/services/api";
 
-type Mode = 'create' | 'edit';
+type Mode = "create" | "edit";
 
-export default function SupportDialogForm({ open, onClose, mode, initial, onSaved }: { open: boolean; onClose: () => void; mode: Mode; initial?: SupportsResponse | null; onSaved: (id?: string | null) => void }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [answer, setAnswer] = useState('');
+export default function SupportDialogForm({
+  open,
+  onClose,
+  mode,
+  initial,
+  onSaved,
+}: {
+  open: boolean;
+  onClose: () => void;
+  mode: Mode;
+  initial?: SupportsResponse | null;
+  onSaved: (id?: string | null) => void;
+}) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [answer, setAnswer] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    if (mode === 'edit' && initial) {
-      setTitle(initial.title ?? '');
-      setContent(initial.content ?? '');
-      setAnswer(initial.answer ?? '');
+    if (mode === "edit" && initial) {
+      setTitle(initial.title ?? "");
+      setContent(initial.content ?? "");
+      setAnswer(initial.answer ?? "");
     }
-    if (mode === 'create') {
-      setTitle('');
-      setContent('');
-      setAnswer('');
+    if (mode === "create") {
+      setTitle("");
+      setContent("");
+      setAnswer("");
     }
     setError(null);
     setSuccess(null);
@@ -42,28 +71,28 @@ export default function SupportDialogForm({ open, onClose, mode, initial, onSave
     setError(null);
     setSuccess(null);
     try {
-      if (mode === 'create') {
+      if (mode === "create") {
         const payload: CreateSupportCommand = {
           title: title.trim(),
           content: content.trim(),
         };
         const id = await createSupport(payload);
-        setSuccess('Tạo hỗ trợ thành công');
+        setSuccess("Tạo hỗ trợ thành công");
         onSaved(id ?? null);
         onClose();
-      } else if (mode === 'edit' && initial) {
+      } else if (mode === "edit" && initial) {
         const payload: UpdateSupportCommand = {
           title: title.trim(),
           content: content.trim(),
           answer: answer.trim() || null,
         };
         await updateSupport(initial.id, payload);
-        setSuccess('Cập nhật hỗ trợ thành công');
+        setSuccess("Cập nhật hỗ trợ thành công");
         onSaved(initial.id);
         onClose();
       }
     } catch (e: any) {
-      setError(e?.message ?? 'Đã xảy ra lỗi');
+      setError(e?.message ?? "Đã xảy ra lỗi");
     } finally {
       setSaving(false);
     }
@@ -71,18 +100,44 @@ export default function SupportDialogForm({ open, onClose, mode, initial, onSave
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{mode === 'create' ? 'Thêm hỗ trợ' : 'Sửa hỗ trợ'}</DialogTitle>
+      <DialogTitle>
+        {mode === "create" ? "Thêm hỗ trợ" : "Sửa hỗ trợ"}
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 0 }}>
           <Grid item xs={12}>
-            <TextField label="Tiêu đề" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth required size="small" />
+            <TextField
+              label="Tiêu đề"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              fullWidth
+              required
+              size="small"
+            />
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Nội dung" value={content} onChange={(e) => setContent(e.target.value)} fullWidth required size="small" multiline minRows={3} />
+            <TextField
+              label="Nội dung"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              fullWidth
+              required
+              size="small"
+              multiline
+              minRows={3}
+            />
           </Grid>
-          {mode === 'edit' && (
+          {mode === "edit" && (
             <Grid item xs={12}>
-              <TextField label="Trả lời" value={answer} onChange={(e) => setAnswer(e.target.value)} fullWidth size="small" multiline minRows={2} />
+              <TextField
+                label="Trả lời"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                fullWidth
+                size="small"
+                multiline
+                minRows={2}
+              />
             </Grid>
           )}
         </Grid>
@@ -98,8 +153,20 @@ export default function SupportDialogForm({ open, onClose, mode, initial, onSave
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Hủy</Button>
-        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary">{mode === 'create' ? 'Tạo' : 'Lưu'}</Button>
+        <Button onClick={onClose} startIcon={<CloseIcon />}>
+          Hủy
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          variant="contained"
+          color="primary"
+          startIcon={
+            mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />
+          }
+        >
+          {mode === "create" ? "Tạo" : "Lưu"}
+        </Button>
       </DialogActions>
     </Dialog>
   );

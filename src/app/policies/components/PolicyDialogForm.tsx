@@ -15,6 +15,9 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {
   CreateUsagePolicyCommand,
   GetAllLabRoomsQuery,
@@ -259,15 +262,8 @@ export default function PolicyDialogForm({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Hủy</Button>
-        <Button
-          onClick={handleSubmit}
-          disabled={!canSubmit}
-          variant="contained"
-          color="primary"
-        >
-          {mode === "create" ? "Tạo" : "Lưu"}
-        </Button>
+        <Button onClick={onClose} startIcon={<CloseIcon />}>Hủy</Button>
+        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary" startIcon={mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />}>{mode === "create" ? "Tạo" : "Lưu"}</Button>
       </DialogActions>
     </Dialog>
   );

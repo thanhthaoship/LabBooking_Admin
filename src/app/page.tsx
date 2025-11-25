@@ -171,13 +171,28 @@ export default function DashboardPage() {
                 </Typography>
               </Stack>
               <Stack direction={{ xs: "column", md: "row" }} spacing={1}>
-                <Button component={Link} href="/lab-rooms" variant="outlined">
+                <Button
+                  component={Link}
+                  href="/lab-rooms"
+                  variant="outlined"
+                  startIcon={<duotone.TableList />}
+                >
                   Phòng Lab
                 </Button>
-                <Button component={Link} href="/equipments" variant="outlined">
+                <Button
+                  component={Link}
+                  href="/equipments"
+                  variant="outlined"
+                  startIcon={<duotone.DataTable />}
+                >
                   Thiết bị
                 </Button>
-                <Button component={Link} href="/supports" variant="outlined">
+                <Button
+                  component={Link}
+                  href="/supports"
+                  variant="outlined"
+                  startIcon={<duotone.TodoList />}
+                >
                   Hỗ trợ
                 </Button>
               </Stack>

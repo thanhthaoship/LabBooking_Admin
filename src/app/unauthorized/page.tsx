@@ -3,7 +3,6 @@
 import BazaarImage from "@/components/BazaarImage";
 import { FlexBox } from "@/components/flex-box";
 import { H2 } from "@/components/Typography";
-import { COMMON_ROUTES } from "@/config/routes";
 import { Box, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +10,7 @@ export default function UnauthorizedPage() {
   const router = useRouter();
 
   const goBack = () => router.back();
-  const goToHome = () => router.push(COMMON_ROUTES.HOME);
+  const goToHome = () => router.push("/");
 
   return (
     <Box
