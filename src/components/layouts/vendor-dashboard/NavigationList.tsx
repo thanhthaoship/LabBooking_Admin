@@ -33,6 +33,12 @@ export const navigationGroups: NavigationGroup[] = [
         pathSegment: "lab-rooms",
         path: "/lab-rooms",
       },
+      {
+        name: "Cấu hình Slot",
+        icon: duotone.Calender,
+        pathSegment: "slots",
+        path: "/slots",
+      },
     ],
   },
 ];

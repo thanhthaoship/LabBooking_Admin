@@ -1,4 +1,4 @@
-import { ApiError, CreateLabRoomCommand, GetAllLabRoomsQuery, LabRoomResponse, PagedResult, UpdateLabRoomCommand } from '../types';
+import { ApiError, CreateLabRoomCommand, GetAllLabRoomsQuery, LabRoomResponse, PagedResult, UpdateLabRoomCommand, SlotResponse, CreateSlotCommand, UpdateSlotCommand } from '../types';
 
 let authToken: string | null = null;
 
@@ -16,6 +16,13 @@ function labRoomsRoot(): string {
   if (!base) return '/api/LabRooms';
   if (base.endsWith('/api')) return `${base}/LabRooms`;
   return `${base}/api/LabRooms`;
+}
+
+function slotsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return '/api/Slot';
+  if (base.endsWith('/api')) return `${base}/Slot`;
+  return `${base}/api/Slot`;
 }
 
 function toQueryString(params: Record<string, string | number | boolean | undefined>): string {
@@ -94,4 +101,44 @@ export async function updateLabRoom(id: string, payload: UpdateLabRoomCommand): 
 
 export async function deleteLabRoom(id: string): Promise<void> {
   await request<void>(`${labRoomsRoot()}/${id}`, { method: 'DELETE' });
+}
+
+export async function getSlots(): Promise<SlotResponse[]> {
+  return request<SlotResponse[]>(`${slotsRoot()}`);
+}
+
+export async function getSlot(id: string): Promise<SlotResponse> {
+  return request<SlotResponse>(`${slotsRoot()}/${id}`);
+}
+
+export async function createSlot(payload: CreateSlotCommand): Promise<string | null> {
+  const res = await fetch(slotsRoot(), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message = (data as Record<string, unknown>)?.['message'] as string ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get('Location');
+  if (!location) return null;
+  const id = location.split('/').filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateSlot(id: string, payload: UpdateSlotCommand): Promise<void> {
+  await request<void>(`${slotsRoot()}/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+}
+
+export async function deleteSlot(id: string): Promise<void> {
+  await request<void>(`${slotsRoot()}/${id}`, { method: 'DELETE' });
 }

@@ -60,3 +60,25 @@ export interface ApiError {
   message: string;
   details?: unknown;
 }
+
+export interface SlotResponse {
+  id: GuidString;
+  startTime: string;
+  endTime: string;
+  slotIndex: number;
+  label: string;
+}
+
+export interface CreateSlotCommand {
+  startTime: string;
+  endTime: string;
+  slotIndex: 1 | 2 | 3 | 4;
+  label: string;
+}
+
+export interface UpdateSlotCommand {
+  startTime: string;
+  endTime: string;
+  slotIndex: 1 | 2 | 3 | 4;
+  label: string;
+}
