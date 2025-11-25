@@ -1,5 +1,10 @@
-import { COMMON_ROUTES } from "./routes.common";
-import { USER_ROUTES } from "./routes.user";
-import { ADMIN_ROUTES } from "./routes.admin";
+export const BASE_ROUTE = "/";
 
-export { COMMON_ROUTES, USER_ROUTES, ADMIN_ROUTES };
+export const ROUTES = {
+  HOME: "/",
+  AUTH: {
+    LOGIN: "/auth/login",
+    LOG_OUT: "/auth/log-out",
+  },
+  DASHBOARD: `${BASE_ROUTE}/dashboard`,
+};

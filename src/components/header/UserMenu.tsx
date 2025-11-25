@@ -1,5 +1,5 @@
 "use client";
-import { API_ENDPOINTS } from "@/config/api.endpoint";
+import { API_ENDPOINTS } from "@/config/routes/endpoints";
 import { COMMON_ROUTES, USER_ROUTES } from "@/config/routes";
 import { PROTECTED_ROUTES } from "@/config/routes/routes.protected";
 import { IResponse } from "@/config/types";

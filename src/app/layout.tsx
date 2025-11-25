@@ -1,10 +1,8 @@
-import { SettingsProvider } from "@/contexts/SettingsContext";
+import NProgressHandler from "@/components/NProgressHandler";
 import RootStyleRegistry from "@/lib/emotion-registry";
 import SnackbarProvider from "@components/SnackbarProvider";
-import { AppProvider } from "@contexts/AppContext";
 import MuiTheme from "@theme/MuiTheme";
 import { Open_Sans } from "next/font/google";
-import NProgressHandler from "@/components/NProgressHandler";
 
 const openSans = Open_Sans({
   subsets: ["vietnamese"],
@@ -19,14 +17,10 @@ export default function RootLayout({
     <html lang="vi" className={openSans.className}>
       <body>
         <RootStyleRegistry>
-          <AppProvider>
-            <MuiTheme>
-              <SettingsProvider>
-                <NProgressHandler />
-                <SnackbarProvider>{children}</SnackbarProvider>
-              </SettingsProvider>
-            </MuiTheme>
-          </AppProvider>
+          <MuiTheme>
+            <NProgressHandler />
+            <SnackbarProvider>{children}</SnackbarProvider>
+          </MuiTheme>
         </RootStyleRegistry>
       </body>
     </html>

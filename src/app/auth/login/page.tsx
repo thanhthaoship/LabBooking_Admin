@@ -1,4 +1,4 @@
-import Login from "@/pages-sections/authen/Login";
+import Login from "@/pages-sections/Login";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

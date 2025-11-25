@@ -1,5 +1,3 @@
-import { COMMON_ROUTES } from "@/config/routes";
-
 export interface INavbarItem {
   title: string;
   url: string;
@@ -8,7 +6,7 @@ export interface INavbarItem {
 const navbarList: INavbarItem[] = [
   {
     title: "Trang chủ",
-    url: COMMON_ROUTES.HOME,
+    url: "/",
   },
 ];
 

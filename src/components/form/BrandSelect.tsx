@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/config/api.endpoint";
+import { API_ENDPOINTS } from "@/config/routes/endpoints";
 import { BrandModel } from "@/config/models/brand";
 import { IResponseWithData } from "@/config/types";
 import { swrFetcher } from "@/utils/swr-fetcher";

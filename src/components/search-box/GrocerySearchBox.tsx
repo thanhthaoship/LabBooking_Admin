@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/config/api.endpoint";
+import { API_ENDPOINTS } from "@/config/routes/endpoints";
 import { IProductFilterRequest, ProductModel } from "@/config/models/product";
 import { IPagedResult, IResponseWithData } from "@/config/types";
 import { defaultImageSrc } from "@/utils/constants";
