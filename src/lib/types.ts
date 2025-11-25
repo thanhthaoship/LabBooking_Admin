@@ -124,6 +124,24 @@ export interface GetAllNotificationsQuery {
   isRead?: boolean;
   pageNumber: number;
   pageSize: 5 | 10 | 15 | 30;
-  sortBy?: "CreatedAt" | "Title";
+  sortBy?: 'CreatedAt' | 'Title';
+  sortDirection: SortDirection;
+}
+
+export interface IncidentsResponse {
+  id: GuidString;
+  labRoomId: GuidString;
+  reportedById: GuidString;
+  type: string;
+  description: string;
+  isResolved: boolean;
+  createdAt: string;
+}
+
+export interface GetAllIncidentsQuery {
+  searchPhrase?: string;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: 'Description';
   sortDirection: SortDirection;
 }

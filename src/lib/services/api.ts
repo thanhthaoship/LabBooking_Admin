@@ -14,6 +14,8 @@ import {
   UpdateSupportCommand,
   NotificationsResponse,
   GetAllNotificationsQuery,
+  IncidentsResponse,
+  GetAllIncidentsQuery,
 } from "../types";
 
 let authToken: string | null = null;
@@ -57,6 +59,13 @@ function notificationsRoot(): string {
   if (!base) return "/api/Notifications";
   if (base.endsWith("/api")) return `${base}/Notifications`;
   return `${base}/api/Notifications`;
+}
+
+function incidentsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Incidents";
+  if (base.endsWith("/api")) return `${base}/Incidents`;
+  return `${base}/api/Incidents`;
 }
 
 function toQueryString(
@@ -281,4 +290,18 @@ export async function markNotificationAsRead(id: string): Promise<void> {
 
 export async function sendTestNotificationToSelf(): Promise<string> {
   return request<string>(`${notificationsRoot()}/send-to-me`);
+}
+
+export async function getIncidents(
+  query: GetAllIncidentsQuery
+): Promise<PagedResult<IncidentsResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<IncidentsResponse>>(
+    `${incidentsRoot()}?${qs.toString()}`
+  );
 }
