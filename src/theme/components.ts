@@ -21,6 +21,9 @@ export const components = {
       ".MuiTableRow-root:hover": {
         backgroundColor: "#F47A1F",
       },
+      ".MuiTextField-root": {
+        borderRadius: 10,
+      },
       a: {
         textDecoration: "none",
         color: "inherit",

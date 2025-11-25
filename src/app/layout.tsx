@@ -2,6 +2,7 @@ import VendorDashboardLayout from "@/components/layouts/vendor-dashboard";
 import NProgressHandler from "@/components/NProgressHandler";
 import RootStyleRegistry from "@/lib/emotion-registry";
 import SnackbarProvider from "@components/SnackbarProvider";
+import { Box } from "@mui/material";
 import MuiTheme from "@theme/MuiTheme";
 import { Open_Sans } from "next/font/google";
 
@@ -21,7 +22,15 @@ export default function RootLayout({
           <MuiTheme>
             <NProgressHandler />
             <SnackbarProvider>
-              <VendorDashboardLayout>{children}</VendorDashboardLayout>
+              <Box
+                sx={{
+                  "& .MuiTextField-root": {
+                    borderRadius: 1,
+                  },
+                }}
+              >
+                <VendorDashboardLayout>{children}</VendorDashboardLayout>
+              </Box>
             </SnackbarProvider>
           </MuiTheme>
         </RootStyleRegistry>

@@ -12,6 +12,8 @@ import {
   GetAllSupportsQuery,
   CreateSupportCommand,
   UpdateSupportCommand,
+  NotificationsResponse,
+  GetAllNotificationsQuery,
 } from "../types";
 
 let authToken: string | null = null;
@@ -48,6 +50,13 @@ function supportsRoot(): string {
   if (!base) return "/api/Supports";
   if (base.endsWith("/api")) return `${base}/Supports`;
   return `${base}/api/Supports`;
+}
+
+function notificationsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Notifications";
+  if (base.endsWith("/api")) return `${base}/Notifications`;
+  return `${base}/api/Notifications`;
 }
 
 function toQueryString(
@@ -248,4 +257,28 @@ export async function updateSupport(
 
 export async function deleteSupport(id: string): Promise<void> {
   await request<void>(`${supportsRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function getNotifications(
+  query: GetAllNotificationsQuery
+): Promise<PagedResult<NotificationsResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  if (typeof query.isRead === "boolean")
+    qs.append("IsRead", String(query.isRead));
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<NotificationsResponse>>(
+    `${notificationsRoot()}?${qs.toString()}`
+  );
+}
+
+export async function markNotificationAsRead(id: string): Promise<void> {
+  await request<void>(`${notificationsRoot()}/${id}/read`, { method: "PUT" });
+}
+
+export async function sendTestNotificationToSelf(): Promise<string> {
+  return request<string>(`${notificationsRoot()}/send-to-me`);
 }

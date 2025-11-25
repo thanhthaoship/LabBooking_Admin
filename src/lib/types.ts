@@ -109,3 +109,21 @@ export interface UpdateSupportCommand {
   content: string;
   answer?: string | null;
 }
+
+export interface NotificationsResponse {
+  id: GuidString;
+  title: string;
+  message: string;
+  dataPayload?: string | null;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface GetAllNotificationsQuery {
+  searchPhrase?: string;
+  isRead?: boolean;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "CreatedAt" | "Title";
+  sortDirection: SortDirection;
+}
