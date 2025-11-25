@@ -24,6 +24,10 @@ import {
   GetAllEquipmentsQuery,
   CreateEquipmentCommand,
   UpdateEquipmentCommand,
+  AuthResponse,
+  LoginUserCommand,
+  RefreshTokenRequest,
+  UserProfileResponse,
 } from "../types";
 
 let authToken: string | null = null;
@@ -88,6 +92,13 @@ function equipmentsRoot(): string {
   if (!base) return "/api/Equipments";
   if (base.endsWith("/api")) return `${base}/Equipments`;
   return `${base}/api/Equipments`;
+}
+
+function authRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Auth";
+  if (base.endsWith("/api")) return `${base}/Auth`;
+  return `${base}/api/Auth`;
 }
 
 function toQueryString(
@@ -461,4 +472,33 @@ export async function moveEquipment(
     status: current.status,
   };
   await updateEquipment(id, payload);
+}
+
+export async function login(payload: LoginUserCommand): Promise<AuthResponse> {
+  const res = await request<AuthResponse>(`${authRoot()}/login`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  setAuthToken(res.accessToken ?? null);
+  return res;
+}
+
+export async function logout(): Promise<void> {
+  await request<void>(`${authRoot()}/logout`, { method: "POST" });
+  setAuthToken(null);
+}
+
+export async function refreshToken(
+  payload: RefreshTokenRequest
+): Promise<AuthResponse> {
+  const res = await request<AuthResponse>(`${authRoot()}/refresh-token`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  setAuthToken(res.accessToken ?? null);
+  return res;
+}
+
+export async function getProfile(): Promise<UserProfileResponse> {
+  return request<UserProfileResponse>(`${authRoot()}/profile`);
 }

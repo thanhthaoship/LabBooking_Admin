@@ -47,13 +47,13 @@ export const navigationGroups: NavigationGroup[] = [
       },
       {
         name: "Hỗ trợ",
-        icon: duotone.ProjectChart,
+        icon: duotone.UserProfile,
         pathSegment: "supports",
         path: "/supports",
       },
       {
         name: "Thông báo",
-        icon: duotone.Session,
+        icon: duotone.TodoList,
         pathSegment: "notifications",
         path: "/notifications",
       },

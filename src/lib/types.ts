@@ -210,3 +210,29 @@ export interface UpdateEquipmentCommand {
   labRoomId: GuidString;
   status: EquipmentStatus;
 }
+
+export interface AuthResponse {
+  accessToken: string;
+  refreshToken: string;
+  refreshTokenExpiry: string;
+}
+
+export interface LoginUserCommand {
+  email: string;
+  password: string;
+}
+
+export interface GoogleLoginCommand {
+  idToken: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface UserProfileResponse {
+  id: GuidString;
+  email?: string | null;
+  userName?: string | null;
+  roles: string[];
+}

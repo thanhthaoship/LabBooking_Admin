@@ -2,6 +2,7 @@
 
 import { Box, BoxProps, styled } from "@mui/material";
 import { Fragment, PropsWithChildren, useState } from "react";
+import { usePathname } from "next/navigation";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 
@@ -28,6 +29,8 @@ const InnerWrapper = styled(Box)(({ theme }) => ({
 const VendorDashboardLayout = ({ children }: PropsWithChildren) => {
   const [sidebarCompact, setSidebarCompact] = useState(0);
   const [showMobileSideBar, setShowMobileSideBar] = useState(0);
+  const pathname = usePathname();
+  const hideChrome = pathname.startsWith("/auth");
 
   const handleCompactToggle = () =>
     setSidebarCompact((state) => (state ? 0 : 1));
@@ -37,17 +40,21 @@ const VendorDashboardLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <Fragment>
-      <DashboardSidebar
-        sidebarCompact={sidebarCompact}
-        showMobileSideBar={showMobileSideBar}
-        setShowMobileSideBar={handleMobileDrawerToggle}
-      />
-
-      <BodyWrapper compact={sidebarCompact ? 1 : 0}>
-        <DashboardNavbar
-          handleDrawerToggle={handleMobileDrawerToggle}
-          setSidebarCompact={handleCompactToggle}
+      {!hideChrome && (
+        <DashboardSidebar
+          sidebarCompact={sidebarCompact}
+          showMobileSideBar={showMobileSideBar}
+          setShowMobileSideBar={handleMobileDrawerToggle}
         />
+      )}
+
+      <BodyWrapper compact={!hideChrome && sidebarCompact ? 1 : 0}>
+        {!hideChrome && (
+          <DashboardNavbar
+            handleDrawerToggle={handleMobileDrawerToggle}
+            setSidebarCompact={handleCompactToggle}
+          />
+        )}
         <InnerWrapper>{children}</InnerWrapper>
       </BodyWrapper>
     </Fragment>
