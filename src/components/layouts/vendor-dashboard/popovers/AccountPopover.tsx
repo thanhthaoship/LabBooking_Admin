@@ -1,4 +1,3 @@
-import { ADMIN_ROUTES, COMMON_ROUTES } from "@/config/routes";
 import { H6 } from "@components/Typography"; // styled components
 import { Avatar, Box, IconButton, Menu, MenuItem, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -18,12 +17,7 @@ const AccountPopover = () => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleLogOut = () => {
     setAnchorEl(null);
-    router.push(COMMON_ROUTES.AUTH.LOG_OUT);
-  };
-
-  const handleChangePasswordClick = () => {
-    setAnchorEl(null);
-    router.push(ADMIN_ROUTES.CHANGE_PASSWORD);
+    router.push("/");
   };
 
   return (
@@ -90,7 +84,6 @@ const AccountPopover = () => {
         </Box>
 
         <Divider />
-        <MenuItem onClick={handleChangePasswordClick}>Đổi mật khẩu</MenuItem>
         <MenuItem onClick={handleLogOut}>Đăng xuất</MenuItem>
       </Menu>
     </Box>

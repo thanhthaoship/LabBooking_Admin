@@ -1,3 +1,4 @@
+import VendorDashboardLayout from "@/components/layouts/vendor-dashboard";
 import NProgressHandler from "@/components/NProgressHandler";
 import RootStyleRegistry from "@/lib/emotion-registry";
 import SnackbarProvider from "@components/SnackbarProvider";
@@ -19,7 +20,9 @@ export default function RootLayout({
         <RootStyleRegistry>
           <MuiTheme>
             <NProgressHandler />
-            <SnackbarProvider>{children}</SnackbarProvider>
+            <SnackbarProvider>
+              <VendorDashboardLayout>{children}</VendorDashboardLayout>
+            </SnackbarProvider>
           </MuiTheme>
         </RootStyleRegistry>
       </body>
