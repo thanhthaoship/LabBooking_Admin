@@ -37,12 +37,13 @@ import duotone from "../../components/icons/duotone";
 import { deleteSupport, getSupports } from "../../lib/services/api";
 import { GetAllSupportsQuery, SupportsResponse } from "../../lib/types";
 import SupportDialogForm from "./components/SupportDialogForm";
+import { Close } from "@mui/icons-material";
 
 export default function SupportsPage() {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<
-    "" | "answered" | "unanswered"
-  >("");
+    "all" | "answered" | "unanswered"
+  >("all");
   const [sortBy, setSortBy] = useState<"Title" | "CreatedDate" | undefined>(
     "Title"
   );
@@ -144,7 +145,11 @@ export default function SupportsPage() {
         >
           Quản lý hỗ trợ
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems={{ xs: "flex-start", md: "center" }}
+        >
           <TextField
             size="small"
             placeholder="Tìm hỗ trợ"
@@ -402,7 +407,7 @@ export default function SupportsPage() {
         <DialogActions>
           <Button
             onClick={() => setConfirmDelete({ open: false, id: null })}
-            startIcon={<CloseIcon />}
+            startIcon={<Close />}
           >
             Hủy
           </Button>

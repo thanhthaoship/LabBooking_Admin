@@ -137,10 +137,11 @@ export default function NotificationsPage() {
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
       <Stack
-        direction="row"
-        alignItems="center"
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
         justifyContent="space-between"
         sx={{ mb: 3 }}
+        spacing={1}
       >
         <Typography
           variant="h5"
@@ -148,7 +149,11 @@ export default function NotificationsPage() {
         >
           Thông báo
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          alignItems={{ xs: "flex-start", md: "center" }}
+          spacing={2}
+        >
           <TextField
             size="small"
             placeholder="Tìm thông báo"
@@ -288,6 +293,7 @@ export default function NotificationsPage() {
                             <Button
                               onClick={() => handleMarkRead(n.id)}
                               size="small"
+                              startIcon={<MarkEmailReadIcon />}
                             >
                               Đánh dấu đã đọc
                             </Button>
@@ -335,6 +341,7 @@ export default function NotificationsPage() {
                             <Button
                               onClick={() => handleMarkRead(n.id)}
                               size="small"
+                              startIcon={<MarkEmailReadIcon />}
                             >
                               Đánh dấu đã đọc
                             </Button>

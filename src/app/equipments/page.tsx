@@ -178,6 +178,7 @@ export default function EquipmentsPage() {
         sx={{ mb: 3 }}
         alignItems={{ xs: "flex-start", md: "center" }}
         direction={{ xs: "column", md: "row" }}
+        spacing={1}
       >
         <Typography
           variant="h5"
