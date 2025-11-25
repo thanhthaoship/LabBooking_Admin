@@ -57,6 +57,12 @@ export const navigationGroups: NavigationGroup[] = [
         pathSegment: "incidents",
         path: "/incidents",
       },
+      {
+        name: "Chính sách",
+        icon: duotone.SiteSetting,
+        pathSegment: "policies",
+        path: "/policies",
+      },
     ],
   },
 ];

@@ -124,7 +124,7 @@ export interface GetAllNotificationsQuery {
   isRead?: boolean;
   pageNumber: number;
   pageSize: 5 | 10 | 15 | 30;
-  sortBy?: 'CreatedAt' | 'Title';
+  sortBy?: "CreatedAt" | "Title";
   sortDirection: SortDirection;
 }
 
@@ -142,6 +142,47 @@ export interface GetAllIncidentsQuery {
   searchPhrase?: string;
   pageNumber: number;
   pageSize: 5 | 10 | 15 | 30;
-  sortBy?: 'Description';
+  sortBy?: "Description";
   sortDirection: SortDirection;
+}
+
+export interface UsagePolicyResponse {
+  id: GuidString;
+  title: string | null;
+  description?: string | null;
+  isActive: boolean;
+  forAllLabRooms: boolean;
+  labRoomId?: GuidString | null;
+  effectiveFrom?: string | null;
+  expirationDate?: string | null;
+  createdDate: string;
+  lastUpdatedDate?: string | null;
+}
+
+export interface GetAllUsagePoliciesQuery {
+  searchPhrase?: string;
+  isActive?: boolean;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "CreatedDate" | "Title";
+  sortDirection: SortDirection;
+}
+
+export interface CreateUsagePolicyCommand {
+  title: string;
+  description?: string | null;
+  forAllLabRooms: boolean;
+  labRoomId?: GuidString | null;
+  effectiveFrom?: string | null;
+  expirationDate?: string | null;
+}
+
+export interface UpdateUsagePolicyCommand {
+  title: string;
+  description?: string | null;
+  forAllLabRooms: boolean;
+  labRoomId?: GuidString | null;
+  effectiveFrom?: string | null;
+  expirationDate?: string | null;
+  isActive: boolean;
 }

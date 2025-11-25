@@ -16,6 +16,10 @@ import {
   GetAllNotificationsQuery,
   IncidentsResponse,
   GetAllIncidentsQuery,
+  UsagePolicyResponse,
+  GetAllUsagePoliciesQuery,
+  CreateUsagePolicyCommand,
+  UpdateUsagePolicyCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -66,6 +70,13 @@ function incidentsRoot(): string {
   if (!base) return "/api/Incidents";
   if (base.endsWith("/api")) return `${base}/Incidents`;
   return `${base}/api/Incidents`;
+}
+
+function usagePoliciesRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/UsagePolicies";
+  if (base.endsWith("/api")) return `${base}/UsagePolicies`;
+  return `${base}/api/UsagePolicies`;
 }
 
 function toQueryString(
@@ -304,4 +315,65 @@ export async function getIncidents(
   return request<PagedResult<IncidentsResponse>>(
     `${incidentsRoot()}?${qs.toString()}`
   );
+}
+
+export async function getUsagePolicies(
+  query: GetAllUsagePoliciesQuery
+): Promise<PagedResult<UsagePolicyResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  if (typeof query.isActive === "boolean")
+    qs.append("IsActive", String(query.isActive));
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<UsagePolicyResponse>>(
+    `${usagePoliciesRoot()}?${qs.toString()}`
+  );
+}
+
+export async function getUsagePolicy(id: string): Promise<UsagePolicyResponse> {
+  return request<UsagePolicyResponse>(`${usagePoliciesRoot()}/${id}`);
+}
+
+export async function createUsagePolicy(
+  payload: CreateUsagePolicyCommand
+): Promise<string | null> {
+  const res = await fetch(usagePoliciesRoot(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get("Location");
+  if (!location) return null;
+  const id = location.split("/").filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateUsagePolicy(
+  id: string,
+  payload: UpdateUsagePolicyCommand
+): Promise<void> {
+  await request<void>(`${usagePoliciesRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteUsagePolicy(id: string): Promise<void> {
+  await request<void>(`${usagePoliciesRoot()}/${id}`, { method: "DELETE" });
 }
