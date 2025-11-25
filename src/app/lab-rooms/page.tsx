@@ -172,9 +172,9 @@ export default function LabRoomsPage() {
             >
               <Table aria-label="Danh sách phòng lab">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main" }}>
+                  <TableRow sx={{ bgcolor: "primary.main", color: "black" }}>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       <TableSortLabel
                         active={sortBy === "LabName"}
@@ -183,7 +183,7 @@ export default function LabRoomsPage() {
                         }
                         onClick={() => handleSortClick("LabName")}
                         sx={{
-                          color: "primary.contrastText",
+                          color: "secondary.contrastText",
                           "& .MuiTableSortLabel-icon": {
                             color: "primary.contrastText",
                           },
@@ -193,17 +193,17 @@ export default function LabRoomsPage() {
                       </TableSortLabel>
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       Mã phòng
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       Sức chứa
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       <TableSortLabel
                         active={sortBy === "CreatedDate"}
@@ -212,9 +212,9 @@ export default function LabRoomsPage() {
                         }
                         onClick={() => handleSortClick("CreatedDate")}
                         sx={{
-                          color: "primary.contrastText",
+                          color: "secondary.contrastText",
                           "& .MuiTableSortLabel-icon": {
-                            color: "primary.contrastText",
+                            color: "secondary.contrastText",
                           },
                         }}
                       >
@@ -222,17 +222,17 @@ export default function LabRoomsPage() {
                       </TableSortLabel>
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       Người quản lý
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     >
                       Thiết bị
                     </TableCell>
                     <TableCell
-                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                      sx={{ color: "secondary.contrastText", fontWeight: 600 }}
                     />
                   </TableRow>
                 </TableHead>

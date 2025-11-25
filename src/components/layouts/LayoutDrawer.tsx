@@ -9,8 +9,8 @@ const Wrapper = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   boxShadow: theme.shadows[1],
   zIndex: theme.zIndex.drawer + 3,
-  color: theme.palette.common.white,
-  backgroundColor: theme.palette.grey[900],
+  color: theme.palette.text.primary,
+  backgroundColor: "#fdccad",
 }));
 
 interface LayoutDrawerProps extends PropsWithChildren {

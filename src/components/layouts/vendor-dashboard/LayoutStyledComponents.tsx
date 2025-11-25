@@ -16,8 +16,8 @@ const SidebarWrapper = styled(Box)<ICompactProps>(({ theme, compact }) => ({
   width: compact ? 86 : 280,
   transition: "all .2s ease",
   zIndex: theme.zIndex.drawer,
-  color: theme.palette.common.white,
-  backgroundColor: theme.palette.grey[900],
+  color: theme.palette.text.primary,
+  backgroundColor: "#fdccad",
 }));
 const NavWrapper = styled(Box)<ICompactProps>(() => ({
   height: "100%",
@@ -34,10 +34,10 @@ const NavItemButton = styled(ButtonBase)<ICompactProps>(
     justifyContent: "flex-start",
     transition: "all 0.15s ease",
     ...(active && {
-      color: theme.palette.info.main,
-      backgroundColor: alpha(theme.palette.grey[800], 0.6),
+      color: theme.palette.primary.main,
+      backgroundColor: alpha(theme.palette.primary.main, 0.12),
       "& .MuiSvgIcon-root .secondary": {
-        color: theme.palette.info.main,
+        color: theme.palette.primary.main,
         opacity: 1,
       },
     }),
@@ -104,8 +104,8 @@ const BadgeValue = styled(Box)<ICompactProps>(({ compact }) => ({
   display: compact ? "none" : "unset",
 }));
 const ChevronLeftIcon = styled(ChevronLeft)<ICompactProps>(
-  ({ compact, sidebarcompact }) => ({
-    color: "rgba(255, 255, 255, .6)",
+  ({ compact, sidebarcompact, theme }) => ({
+    color: theme.palette.primary.main,
     cursor: "pointer",
     padding: 8,
     height: 40,
@@ -115,25 +115,27 @@ const ChevronLeftIcon = styled(ChevronLeft)<ICompactProps>(
     display: compact ? "none" : "block",
     transform: sidebarcompact ? "rotate(180deg)" : "rotate(0deg)",
     "&:hover": {
-      background: "rgba(255, 255, 255, .05)",
-      color: "rgba(255, 255, 255, 1)",
+      background: alpha(theme.palette.primary.main, 0.08),
+      color: theme.palette.primary.dark,
     },
   })
 );
-const ChevronRightIcon = styled(ChevronRight)<ICompactProps>(({ compact }) => ({
-  color: "rgba(255, 255, 255, .6)",
-  cursor: "pointer",
-  padding: 8,
-  height: 40,
-  width: 40,
-  borderRadius: "50%",
-  transition: "all 0.3s",
-  display: compact ? "none" : "block",
-  "&:hover": {
-    background: "rgba(255, 255, 255, .05)",
-    color: "rgba(255, 255, 255, 1)",
-  },
-}));
+const ChevronRightIcon = styled(ChevronRight)<ICompactProps>(
+  ({ compact, theme }) => ({
+    color: theme.palette.primary.main,
+    cursor: "pointer",
+    padding: 8,
+    height: 40,
+    width: 40,
+    borderRadius: "50%",
+    transition: "all 0.3s",
+    display: compact ? "none" : "block",
+    "&:hover": {
+      background: alpha(theme.palette.primary.main, 0.08),
+      color: theme.palette.primary.dark,
+    },
+  })
+);
 export {
   BadgeValue,
   BulletIcon,

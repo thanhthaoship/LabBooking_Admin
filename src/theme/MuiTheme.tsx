@@ -6,7 +6,7 @@ import {
   ThemeProvider,
 } from "@mui/material/styles";
 import { merge } from "merge";
-import customThemeOptions from "./themeOptions"; // =======================================================
+import customThemeOptions from "./themeOptions.orange"; // =======================================================
 
 // =======================================================
 const MuiTheme = ({ children }) => {

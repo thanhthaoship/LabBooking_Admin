@@ -32,7 +32,6 @@ const TableHeader = ({
   heading,
   sortBy,
   onRequestSort,
-  hideSelectBtn = false,
 }: IProps) => {
   return (
     <TableHead
@@ -41,18 +40,6 @@ const TableHeader = ({
       }}
     >
       <TableRow>
-        {!hideSelectBtn && (
-          <StyledTableCell align="left">
-            {/* <Checkbox
-              color="info"
-              checked={rowCount > 0 && numSelected === rowCount}
-              onChange={(event) =>
-                onSelectAllClick(event.target.checked, "product")
-              }
-            /> */}
-          </StyledTableCell>
-        )}
-
         {heading.map((headCell: TableHeadingItem) => {
           const isActive = sortBy === headCell.id;
 

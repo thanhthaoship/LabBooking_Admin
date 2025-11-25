@@ -1,6 +1,6 @@
 import { FlexBox, FlexRowCenter } from "@/components/flex-box";
 import Toggle from "@components/icons/Toggle";
-import { Box, styled, useMediaQuery } from "@mui/material";
+import { Box, styled, useMediaQuery, alpha } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,9 +10,9 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   zIndex: 11,
   paddingTop: "1rem",
   paddingBottom: "1rem",
-  backgroundColor: "#ffffff",
+  backgroundColor: theme.palette.primary.main,
   boxShadow: theme.shadows[2],
-  color: theme.palette.text.primary,
+  color: theme.palette.primary.contrastText,
 }));
 const StyledToolBar = styled(Toolbar)(() => ({
   "@media (min-width: 0px)": {
@@ -27,9 +27,8 @@ const ToggleWrapper = styled(FlexRowCenter)(({ theme }) => ({
   flexShrink: 0,
   cursor: "pointer",
   borderRadius: "8px",
-  backgroundColor: theme.palette.grey[100],
+  backgroundColor: alpha(theme.palette.primary.main, 0.12),
 }));
-
 
 // ===================================================================
 const DashboardNavbar = ({
