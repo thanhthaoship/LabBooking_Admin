@@ -5,6 +5,7 @@ import SnackbarProvider from "@components/SnackbarProvider";
 import { Box } from "@mui/material";
 import MuiTheme from "@theme/MuiTheme";
 import { Open_Sans } from "next/font/google";
+import { AuthProvider } from "@contexts/AuthContext";
 
 const openSans = Open_Sans({
   subsets: ["vietnamese"],
@@ -22,15 +23,17 @@ export default function RootLayout({
           <MuiTheme>
             <NProgressHandler />
             <SnackbarProvider>
-              <Box
-                sx={{
-                  "& .MuiTextField-root": {
-                    borderRadius: 1,
-                  },
-                }}
-              >
-                <VendorDashboardLayout>{children}</VendorDashboardLayout>
-              </Box>
+              <AuthProvider>
+                <Box
+                  sx={{
+                    "& .MuiTextField-root": {
+                      borderRadius: 1,
+                    },
+                  }}
+                >
+                  <VendorDashboardLayout>{children}</VendorDashboardLayout>
+                </Box>
+              </AuthProvider>
             </SnackbarProvider>
           </MuiTheme>
         </RootStyleRegistry>

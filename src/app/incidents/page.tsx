@@ -180,7 +180,7 @@ export default function IncidentsPage() {
           {filtered.length === 0 ? (
             <Box sx={{ py: 6 }}>
               <EmptyState
-                title="Chưa có dữ liệu)"
+                title="Chưa có dữ liệu"
                 description="Không có sự cố nào"
                 Icon={duotone.ElementHub}
               />

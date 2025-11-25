@@ -213,7 +213,7 @@ export default function PoliciesPage() {
           {filtered.length === 0 ? (
             <Box sx={{ py: 6 }}>
               <EmptyState
-                title="Chưa có dữ liệu)"
+                title="Chưa có dữ liệu"
                 description="Hãy thêm chính sách đầu tiên để bắt đầu"
                 actionLabel="Thêm chính sách"
                 onAction={() => setCreateOpen(true)}

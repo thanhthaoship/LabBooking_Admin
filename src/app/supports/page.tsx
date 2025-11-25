@@ -201,7 +201,7 @@ export default function SupportsPage() {
           {filtered.length === 0 ? (
             <Box sx={{ py: 6 }}>
               <EmptyState
-                title="Chưa có dữ liệu)"
+                title="Chưa có dữ liệu"
                 description="Hãy thêm hỗ trợ đầu tiên để bắt đầu"
                 actionLabel="Thêm hỗ trợ"
                 onAction={() => setCreateOpen(true)}

@@ -14,9 +14,9 @@ import { LoadingButton } from "@mui/lab";
 import { ArrowRightAlt, Lock, Person } from "@mui/icons-material";
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { login } from "../../../lib/services/api";
 import { LoginUserCommand } from "../../../lib/types";
-import { useRouter } from "next/navigation";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,6 +24,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const params = useSearchParams();
+  const { loginWithEmail } = useAuth();
 
   const canSubmit = useMemo(
     () => email.trim().length > 0 && password.trim().length > 0 && !loading,
@@ -38,13 +40,10 @@ export default function LoginPage() {
         email: email.trim(),
         password: password.trim(),
       };
-      const res = await login(payload);
+      const res = await loginWithEmail(payload);
       if (res?.accessToken) {
-        try {
-          localStorage.setItem("accessToken", res.accessToken);
-          localStorage.setItem("refreshToken", res.refreshToken);
-        } catch {}
-        router.push("/");
+        const redirect = params.get("redirect") || "/";
+        router.push(redirect);
       }
     } catch (e) {
       const msg = (e as { message?: string })?.message ?? "Đăng nhập thất bại";
@@ -58,12 +57,16 @@ export default function LoginPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "background.default",
         display: "flex",
         alignItems: "center",
+        width: "100vw",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
       }}
     >
-      <Container maxWidth="lg">
+      <Container>
         <Grid
           container
           spacing={0}
@@ -73,12 +76,12 @@ export default function LoginPage() {
           <Grid item xs={12} md={6} sx={{ bgcolor: "background.paper" }}>
             <Box sx={{ px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 } }}>
               <Typography
-                variant="subtitle1"
+                variant="h4"
                 sx={{ color: "primary.main", fontWeight: 700 }}
               >
                 LAB BOOKING
               </Typography>
-              <Typography variant="body2" sx={{ mt: 2 }}>
+              <Typography variant="body2" sx={{ mt: 3 }}>
                 Chào mừng trở lại!
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 800, mt: 0.5 }}>
@@ -92,7 +95,6 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   fullWidth
-                  size="small"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -107,7 +109,6 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   fullWidth
-                  size="small"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -168,10 +169,10 @@ export default function LoginPage() {
               }}
             >
               <Image
-                src="/assets/images/icons/admin-dashboard.svg"
+                src="/assets/images/illustrations/welcome.svg"
                 alt="Illustration"
                 width={320}
-                height={220}
+                height={320}
               />
             </Box>
           </Grid>

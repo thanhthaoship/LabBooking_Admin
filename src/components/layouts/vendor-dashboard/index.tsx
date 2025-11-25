@@ -12,7 +12,7 @@ interface BoxWrapperProps extends BoxProps {
 
 const BodyWrapper = styled(Box)<BoxWrapperProps>(({ theme, compact }) => ({
   transition: "margin-left 0.3s",
-  marginLeft: compact ? "86px" : "280px",
+  marginLeft: compact === 2 ? "0px" : compact ? "86px" : "280px",
   [theme.breakpoints.down("lg")]: {
     marginLeft: 0,
   },
@@ -48,7 +48,7 @@ const VendorDashboardLayout = ({ children }: PropsWithChildren) => {
         />
       )}
 
-      <BodyWrapper compact={!hideChrome && sidebarCompact ? 1 : 0}>
+      <BodyWrapper compact={hideChrome ? 2 : sidebarCompact ? 1 : 0}>
         {!hideChrome && (
           <DashboardNavbar
             handleDrawerToggle={handleMobileDrawerToggle}

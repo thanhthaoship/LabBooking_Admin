@@ -190,7 +190,7 @@ export default function NotificationsPage() {
           {data.items.length === 0 ? (
             <Box sx={{ py: 6 }}>
               <EmptyState
-                title="Chưa có dữ liệu)"
+                title="Chưa có dữ liệu"
                 description="Không có thông báo nào"
                 Icon={duotone.Session}
               />
