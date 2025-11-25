@@ -82,3 +82,30 @@ export interface UpdateSlotCommand {
   slotIndex: 1 | 2 | 3 | 4;
   label: string;
 }
+
+export interface SupportsResponse {
+  id: GuidString;
+  title: string;
+  content: string;
+  answer?: string | null;
+  createdById: GuidString;
+}
+
+export interface GetAllSupportsQuery {
+  searchPhrase?: string;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "Title" | "CreatedDate";
+  sortDirection: SortDirection;
+}
+
+export interface CreateSupportCommand {
+  title: string;
+  content: string;
+}
+
+export interface UpdateSupportCommand {
+  title: string;
+  content: string;
+  answer?: string | null;
+}

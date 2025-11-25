@@ -1,4 +1,18 @@
-import { ApiError, CreateLabRoomCommand, GetAllLabRoomsQuery, LabRoomResponse, PagedResult, UpdateLabRoomCommand, SlotResponse, CreateSlotCommand, UpdateSlotCommand } from '../types';
+import {
+  ApiError,
+  CreateLabRoomCommand,
+  GetAllLabRoomsQuery,
+  LabRoomResponse,
+  PagedResult,
+  UpdateLabRoomCommand,
+  SlotResponse,
+  CreateSlotCommand,
+  UpdateSlotCommand,
+  SupportsResponse,
+  GetAllSupportsQuery,
+  CreateSupportCommand,
+  UpdateSupportCommand,
+} from "../types";
 
 let authToken: string | null = null;
 
@@ -7,25 +21,38 @@ export function setAuthToken(token: string | null): void {
 }
 
 function normalizeBase(): string {
-  const raw = (process.env.aspNetApiUrl ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(/\/+$/, '');
-  return raw || '';
+  const raw = (
+    process.env.aspNetApiUrl ??
+    process.env.NEXT_PUBLIC_API_BASE_URL ??
+    ""
+  ).replace(/\/+$/, "");
+  return raw || "";
 }
 
 function labRoomsRoot(): string {
   const base = normalizeBase();
-  if (!base) return '/api/LabRooms';
-  if (base.endsWith('/api')) return `${base}/LabRooms`;
+  if (!base) return "/api/LabRooms";
+  if (base.endsWith("/api")) return `${base}/LabRooms`;
   return `${base}/api/LabRooms`;
 }
 
 function slotsRoot(): string {
   const base = normalizeBase();
-  if (!base) return '/api/Slot';
-  if (base.endsWith('/api')) return `${base}/Slot`;
+  if (!base) return "/api/Slot";
+  if (base.endsWith("/api")) return `${base}/Slot`;
   return `${base}/api/Slot`;
 }
 
-function toQueryString(params: Record<string, string | number | boolean | undefined>): string {
+function supportsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Supports";
+  if (base.endsWith("/api")) return `${base}/Supports`;
+  return `${base}/api/Supports`;
+}
+
+function toQueryString(
+  params: Record<string, string | number | boolean | undefined>
+): string {
   const usp = new URLSearchParams();
   Object.entries(params).forEach(([k, v]) => {
     if (v !== undefined && v !== null) usp.append(k, String(v));
@@ -35,7 +62,7 @@ function toQueryString(params: Record<string, string | number | boolean | undefi
 
 async function request<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const headers: HeadersInit = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
     ...(init?.headers ?? {}),
   };
@@ -44,19 +71,22 @@ async function request<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     let message = res.statusText;
     try {
       const data = await res.json();
-      message = (data as Record<string, unknown>)?.['message'] as string ?? message;
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
     } catch {}
     const err: ApiError = { status: res.status, message };
     throw err;
   }
   const hasBody = res.status !== 204;
   if (!hasBody) return undefined as unknown as T;
-  const ct = res.headers.get('content-type') ?? '';
-  if (ct.includes('application/json')) return (await res.json()) as T;
+  const ct = res.headers.get("content-type") ?? "";
+  if (ct.includes("application/json")) return (await res.json()) as T;
   return (await res.text()) as unknown as T;
 }
 
-export async function getLabRooms(query: GetAllLabRoomsQuery): Promise<PagedResult<LabRoomResponse>> {
+export async function getLabRooms(
+  query: GetAllLabRoomsQuery
+): Promise<PagedResult<LabRoomResponse>> {
   const qs = toQueryString({
     SearchPhrase: query.searchPhrase,
     PageNumber: query.pageNumber,
@@ -71,11 +101,13 @@ export async function getLabRoom(id: string): Promise<LabRoomResponse> {
   return request<LabRoomResponse>(`${labRoomsRoot()}/${id}`);
 }
 
-export async function createLabRoom(payload: CreateLabRoomCommand): Promise<string | null> {
+export async function createLabRoom(
+  payload: CreateLabRoomCommand
+): Promise<string | null> {
   const res = await fetch(labRoomsRoot(), {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
     },
     body: JSON.stringify(payload),
@@ -84,23 +116,30 @@ export async function createLabRoom(payload: CreateLabRoomCommand): Promise<stri
     let message = res.statusText;
     try {
       const data = await res.json();
-      message = (data as Record<string, unknown>)?.['message'] as string ?? message;
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
     } catch {}
     const err: ApiError = { status: res.status, message };
     throw err;
   }
-  const location = res.headers.get('Location');
+  const location = res.headers.get("Location");
   if (!location) return null;
-  const id = location.split('/').filter(Boolean).pop() ?? null;
+  const id = location.split("/").filter(Boolean).pop() ?? null;
   return id;
 }
 
-export async function updateLabRoom(id: string, payload: UpdateLabRoomCommand): Promise<void> {
-  await request<void>(`${labRoomsRoot()}/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+export async function updateLabRoom(
+  id: string,
+  payload: UpdateLabRoomCommand
+): Promise<void> {
+  await request<void>(`${labRoomsRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function deleteLabRoom(id: string): Promise<void> {
-  await request<void>(`${labRoomsRoot()}/${id}`, { method: 'DELETE' });
+  await request<void>(`${labRoomsRoot()}/${id}`, { method: "DELETE" });
 }
 
 export async function getSlots(): Promise<SlotResponse[]> {
@@ -111,11 +150,13 @@ export async function getSlot(id: string): Promise<SlotResponse> {
   return request<SlotResponse>(`${slotsRoot()}/${id}`);
 }
 
-export async function createSlot(payload: CreateSlotCommand): Promise<string | null> {
+export async function createSlot(
+  payload: CreateSlotCommand
+): Promise<string | null> {
   const res = await fetch(slotsRoot(), {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
     },
     body: JSON.stringify(payload),
@@ -124,21 +165,87 @@ export async function createSlot(payload: CreateSlotCommand): Promise<string | n
     let message = res.statusText;
     try {
       const data = await res.json();
-      message = (data as Record<string, unknown>)?.['message'] as string ?? message;
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
     } catch {}
     const err: ApiError = { status: res.status, message };
     throw err;
   }
-  const location = res.headers.get('Location');
+  const location = res.headers.get("Location");
   if (!location) return null;
-  const id = location.split('/').filter(Boolean).pop() ?? null;
+  const id = location.split("/").filter(Boolean).pop() ?? null;
   return id;
 }
 
-export async function updateSlot(id: string, payload: UpdateSlotCommand): Promise<void> {
-  await request<void>(`${slotsRoot()}/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+export async function updateSlot(
+  id: string,
+  payload: UpdateSlotCommand
+): Promise<void> {
+  await request<void>(`${slotsRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
 }
 
 export async function deleteSlot(id: string): Promise<void> {
-  await request<void>(`${slotsRoot()}/${id}`, { method: 'DELETE' });
+  await request<void>(`${slotsRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function getSupports(
+  query: GetAllSupportsQuery
+): Promise<PagedResult<SupportsResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<SupportsResponse>>(
+    `${supportsRoot()}?${qs.toString()}`
+  );
+}
+
+export async function getSupport(id: string): Promise<SupportsResponse> {
+  return request<SupportsResponse>(`${supportsRoot()}/${id}`);
+}
+
+export async function createSupport(
+  payload: CreateSupportCommand
+): Promise<string | null> {
+  const res = await fetch(supportsRoot(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get("Location");
+  if (!location) return null;
+  const id = location.split("/").filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateSupport(
+  id: string,
+  payload: UpdateSupportCommand
+): Promise<void> {
+  await request<void>(`${supportsRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteSupport(id: string): Promise<void> {
+  await request<void>(`${supportsRoot()}/${id}`, { method: "DELETE" });
 }

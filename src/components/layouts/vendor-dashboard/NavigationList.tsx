@@ -39,6 +39,12 @@ export const navigationGroups: NavigationGroup[] = [
         pathSegment: "slots",
         path: "/slots",
       },
+      {
+        name: "Hỗ trợ",
+        icon: duotone.Chat,
+        pathSegment: "supports",
+        path: "/supports",
+      },
     ],
   },
 ];
