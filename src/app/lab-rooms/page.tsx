@@ -78,6 +78,8 @@ export default function LabRoomsPage() {
     getLabRooms(query)
       .then((res) => {
         if (!active) return;
+
+        console.log("res", res);
         setData(res);
       })
       .catch((e) => {

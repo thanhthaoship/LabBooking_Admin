@@ -1,11 +1,8 @@
-import { FlexBetween } from "@/components/flex-box";
 import Scrollbar from "@/components/Scrollbar";
 import { Box, useMediaQuery } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import LayoutDrawer from "../LayoutDrawer";
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ListIconWrapper,
   ListLabel,
   NavItemButton,
@@ -48,7 +45,14 @@ const DashboardSidebar = (props: DashboardSidebarProps) => {
 
           {group.items.map((item, index) => {
             return (
-              <Box key={`sidenav-${index}`}>
+              <Box
+                key={`sidenav-${index}`}
+                sx={{
+                  "& :hover": {
+                    backgroundColor: "#ffede1",
+                  },
+                }}
+              >
                 <NavItemButton
                   key={item.name}
                   className="navItem"

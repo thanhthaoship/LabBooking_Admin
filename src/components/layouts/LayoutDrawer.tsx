@@ -20,7 +20,7 @@ interface LayoutDrawerProps extends PropsWithChildren {
 }
 
 const LayoutDrawer = (props: LayoutDrawerProps) => {
-  const { children, open, onClose, drawerWidth = 280 } = props;
+  const { children, open, onClose, drawerWidth = 220 } = props;
   return (
     <Drawer
       open={open}

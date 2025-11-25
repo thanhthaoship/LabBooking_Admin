@@ -20,12 +20,8 @@ const BodyWrapper = styled(Box)<BoxWrapperProps>(({ theme, compact }) => ({
 const InnerWrapper = styled(Box)(({ theme }) => ({
   transition: "all 0.3s",
   [theme.breakpoints.up("lg")]: {
-    maxWidth: 1200,
+    maxWidth: 1400,
     margin: "auto",
-  },
-  [theme.breakpoints.down(1550)]: {
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
   },
 }));
 

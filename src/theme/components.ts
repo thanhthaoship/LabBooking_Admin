@@ -18,6 +18,9 @@ export const components = {
       ".MuiRating-sizeSmall": {
         fontSize: "20px",
       },
+      ".MuiTableRow-root:hover": {
+        backgroundColor: "#F47A1F",
+      },
       a: {
         textDecoration: "none",
         color: "inherit",

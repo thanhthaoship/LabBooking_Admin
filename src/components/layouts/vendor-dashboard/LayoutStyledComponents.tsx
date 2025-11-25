@@ -33,9 +33,10 @@ const NavItemButton = styled(ButtonBase)<ICompactProps>(
     padding: "0 12px 0 16px",
     justifyContent: "flex-start",
     transition: "all 0.15s ease",
+
     ...(active && {
       color: theme.palette.primary.main,
-      backgroundColor: alpha(theme.palette.primary.main, 0.12),
+      backgroundColor: "#ffede1",
       "& .MuiSvgIcon-root .secondary": {
         color: theme.palette.primary.main,
         opacity: 1,

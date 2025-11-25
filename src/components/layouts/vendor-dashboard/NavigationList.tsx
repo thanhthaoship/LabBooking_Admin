@@ -27,6 +27,12 @@ export const navigationGroups: NavigationGroup[] = [
         pathSegment: "dashboard",
         path: "/",
       },
+      {
+        name: "Quản lý phòng Lab",
+        icon: duotone.TableList,
+        pathSegment: "lab-rooms",
+        path: "/lab-rooms",
+      },
     ],
   },
 ];
