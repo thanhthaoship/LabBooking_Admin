@@ -172,7 +172,7 @@ export default function SupportsPage() {
             onChange={(e) => setFilterStatus(e.target.value as any)}
             sx={{ minWidth: 160 }}
           >
-            <MenuItem value="">Tất cả</MenuItem>
+            <MenuItem value={"all"}>Tất cả</MenuItem>
             <MenuItem value="unanswered">Chưa trả lời</MenuItem>
             <MenuItem value="answered">Đã trả lời</MenuItem>
           </TextField>
@@ -374,18 +374,6 @@ export default function SupportsPage() {
             </Stack>
           )}
         </>
-      )}
-
-      {filtered.length === 0 && (
-        <Box sx={{ py: 6 }}>
-          <EmptyState
-            title="Chưa có dữ liệu"
-            description="Hãy thêm hỗ trợ đầu tiên để bắt đầu"
-            actionLabel="Thêm hỗ trợ"
-            onAction={() => setCreateOpen(true)}
-            Icon={duotone.Chat}
-          />
-        </Box>
       )}
 
       <SupportDialogForm
