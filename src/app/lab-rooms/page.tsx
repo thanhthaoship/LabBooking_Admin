@@ -34,6 +34,8 @@ import {
 } from "../../lib/types";
 import { getLabRooms } from "../../lib/services/api";
 import LabRoomDialogForm from "./components/LabRoomDialogForm";
+import EmptyState from "../../components/EmptyState";
+import duotone from "../../components/icons/duotone";
 
 function useDebounced<T>(value: T, delay: number): T {
   const [v, setV] = useState(value);
@@ -166,7 +168,17 @@ export default function LabRoomsPage() {
 
       {!loading && data && (
         <>
-          {!isMobile ? (
+          {data.items.length === 0 ? (
+            <Box sx={{ py: 6 }}>
+              <EmptyState
+                title="Chưa có dữ liệu"
+                description="Hãy thêm phòng Lab đầu tiên để bắt đầu"
+                actionLabel="Thêm phòng Lab"
+                onAction={() => setCreateOpen(true)}
+                Icon={duotone.TableList}
+              />
+            </Box>
+          ) : !isMobile ? (
             <TableContainer
               component={Paper}
               elevation={0}

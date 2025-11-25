@@ -35,6 +35,8 @@ import { useTheme } from "@mui/material/styles";
 import { SlotResponse } from "../../lib/types";
 import { deleteSlot, getSlots } from "../../lib/services/api";
 import SlotDialogForm from "./components/SlotDialogForm";
+import EmptyState from "../../components/EmptyState";
+import duotone from "../../components/icons/duotone";
 
 function toSeconds(t: string): number {
   const parts = t.split(":").map((p) => Number(p));
@@ -140,22 +142,7 @@ export default function SlotsPage() {
             }}
             sx={{ minWidth: { xs: 160, md: 240 }, bgcolor: "background.paper" }}
           />
-          <TextField
-            select
-            size="small"
-            value={filterIndex}
-            onChange={(e) =>
-              setFilterIndex(
-                e.target.value === "" ? "" : Number(e.target.value)
-              )
-            }
-            sx={{ minWidth: 120 }}
-          >
-            <MenuItem value="">Tất cả</MenuItem>
-            {[1, 2, 3, 4].map((i) => (
-              <MenuItem key={i} value={i}>{`Slot ${i}`}</MenuItem>
-            ))}
-          </TextField>
+
           <Button
             onClick={() => setCreateOpen(true)}
             variant="contained"
@@ -178,7 +165,17 @@ export default function SlotsPage() {
 
       {!loading && data && (
         <>
-          {!isMobile ? (
+          {filtered.length === 0 ? (
+            <Box sx={{ py: 6 }}>
+              <EmptyState
+                title="Chưa có dữ liệu"
+                description="Hãy thêm slot đầu tiên để bắt đầu"
+                actionLabel="Thêm Slot"
+                onAction={() => setCreateOpen(true)}
+                Icon={duotone.Calender}
+              />
+            </Box>
+          ) : !isMobile ? (
             <TableContainer
               component={Paper}
               elevation={0}
