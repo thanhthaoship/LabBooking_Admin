@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import {
   Alert,
   Box,
@@ -18,7 +19,7 @@ import { LoginUserCommand } from "../../../lib/types";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,68 @@ export default function LoginPage() {
   };
 
   return (
+    <Box sx={{ px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 } }}>
+      <Typography variant="h4" sx={{ color: "primary.main", fontWeight: 700 }}>
+        LAB BOOKING
+      </Typography>
+      <Typography variant="body2" sx={{ mt: 3 }}>
+        Chào mừng trở lại!
+      </Typography>
+      <Typography variant="h4" sx={{ fontWeight: 800, mt: 0.5 }}>
+        Đăng nhập
+      </Typography>
+
+      <Stack spacing={2.2} sx={{ mt: 3 }}>
+        <TextField
+          label="Tên đăng nhập"
+          placeholder="admin@fpt.edu.vn"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Person sx={{ opacity: 0.7 }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          label="Mật khẩu"
+          type="password"
+          value={password}
+          placeholder="********"
+          onChange={(e) => setPassword(e.target.value)}
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock sx={{ opacity: 0.7 }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+
+        {error && <Alert severity="error">{error}</Alert>}
+
+        <LoadingButton
+          loading={loading}
+          disabled={!canSubmit}
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          endIcon={<ArrowRightAlt />}
+          sx={{ alignSelf: "flex-start", px: 3, borderRadius: 999 }}
+        >
+          Đăng nhập
+        </LoadingButton>
+      </Stack>
+    </Box>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <Box
       sx={{
         minHeight: "100vh",
@@ -74,66 +137,13 @@ export default function LoginPage() {
           sx={{ borderRadius: 3, overflow: "hidden", boxShadow: 3 }}
         >
           <Grid item xs={12} md={6} sx={{ bgcolor: "background.paper" }}>
-            <Box sx={{ px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 } }}>
-              <Typography
-                variant="h4"
-                sx={{ color: "primary.main", fontWeight: 700 }}
-              >
-                LAB BOOKING
-              </Typography>
-              <Typography variant="body2" sx={{ mt: 3 }}>
-                Chào mừng trở lại!
-              </Typography>
-              <Typography variant="h4" sx={{ fontWeight: 800, mt: 0.5 }}>
-                Đăng nhập
-              </Typography>
-
-              <Stack spacing={2.2} sx={{ mt: 3 }}>
-                <TextField
-                  label="Tên đăng nhập"
-                  placeholder="admin@fpt.edu.vn"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Person sx={{ opacity: 0.7 }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  label="Mật khẩu"
-                  type="password"
-                  value={password}
-                  placeholder="********"
-                  onChange={(e) => setPassword(e.target.value)}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock sx={{ opacity: 0.7 }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                {error && <Alert severity="error">{error}</Alert>}
-
-                <LoadingButton
-                  loading={loading}
-                  disabled={!canSubmit}
-                  onClick={handleSubmit}
-                  variant="contained"
-                  color="primary"
-                  endIcon={<ArrowRightAlt />}
-                  sx={{ alignSelf: "flex-start", px: 3, borderRadius: 999 }}
-                >
-                  Đăng nhập
-                </LoadingButton>
-              </Stack>
-            </Box>
+            <Suspense
+              fallback={
+                <Box sx={{ px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 } }} />
+              }
+            >
+              <LoginForm />
+            </Suspense>
           </Grid>
 
           <Grid
