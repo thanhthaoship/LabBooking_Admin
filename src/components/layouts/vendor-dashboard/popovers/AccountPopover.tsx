@@ -1,7 +1,8 @@
 import { H6 } from "@components/Typography"; // styled components
 import { Avatar, Box, IconButton, Menu, MenuItem, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
+import { useAuth } from "@contexts/AuthContext";
 
 const Divider = styled(Box)(({ theme }) => ({
   margin: "0.5rem 0",
@@ -9,15 +10,18 @@ const Divider = styled(Box)(({ theme }) => ({
 }));
 
 const AccountPopover = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const router = useRouter();
+  const { logout, user } = useAuth();
 
   const handleClose = () => setAnchorEl(null);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleLogOut = () => {
+  const handleClick = (event: MouseEvent<HTMLElement>) =>
+    setAnchorEl(event.currentTarget);
+  const handleLogOut = async () => {
     setAnchorEl(null);
-    router.push("/");
+    await logout();
+    router.push("/auth/login");
   };
 
   return (
@@ -80,7 +84,7 @@ const AccountPopover = () => {
         }}
       >
         <Box px={2} pt={1}>
-          <H6>Admin</H6>
+          <H6>{user?.userName || user?.email || "Tài khoản"}</H6>
         </Box>
 
         <Divider />

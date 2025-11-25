@@ -107,6 +107,7 @@ export default function LoginPage() {
                   label="Mật khẩu"
                   type="password"
                   value={password}
+                  placeholder="********"
                   onChange={(e) => setPassword(e.target.value)}
                   fullWidth
                   InputProps={{
