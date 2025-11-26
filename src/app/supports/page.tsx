@@ -261,6 +261,11 @@ export default function SupportsPage() {
                     <TableCell
                       sx={{ color: "primary.contrastText", fontWeight: 600 }}
                     >
+                      Trạng thái
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
                       Người tạo
                     </TableCell>
                     <TableCell
@@ -287,6 +292,7 @@ export default function SupportsPage() {
                             : s.content}
                         </Typography>
                       </TableCell>
+                      <TableCell>{s.answer}</TableCell>
                       <TableCell>
                         {s.status === "Responded" ? (
                           <Chip

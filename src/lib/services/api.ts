@@ -49,6 +49,18 @@ import {
 
 let authToken: string | null = null;
 
+function resolveAuthToken(): string | null {
+  if (authToken) return authToken;
+  if (typeof localStorage !== "undefined") {
+    const t = localStorage.getItem("accessToken");
+    if (t) {
+      authToken = t;
+      return t;
+    }
+  }
+  return null;
+}
+
 export function setAuthToken(token: string | null): void {
   authToken = token;
 }
@@ -164,9 +176,10 @@ function toQueryString(
 }
 
 async function request<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
+  const t = resolveAuthToken();
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    ...(t ? { Authorization: `Bearer ${t}` } : {}),
     ...(init?.headers ?? {}),
   };
   const res = await fetch(input, { ...init, headers });
@@ -207,11 +220,12 @@ export async function getLabRoom(id: string): Promise<LabRoomResponse> {
 export async function createLabRoom(
   payload: CreateLabRoomCommand
 ): Promise<string | null> {
+  const t = resolveAuthToken();
   const res = await fetch(labRoomsRoot(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(t ? { Authorization: `Bearer ${t}` } : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -260,7 +274,9 @@ export async function createSlot(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(resolveAuthToken()
+        ? { Authorization: `Bearer ${resolveAuthToken()}` }
+        : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -319,7 +335,9 @@ export async function createSupport(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(resolveAuthToken()
+        ? { Authorization: `Bearer ${resolveAuthToken()}` }
+        : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -418,7 +436,9 @@ export async function createUsagePolicy(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(resolveAuthToken()
+        ? { Authorization: `Bearer ${resolveAuthToken()}` }
+        : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -477,7 +497,9 @@ export async function createEquipment(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(resolveAuthToken()
+        ? { Authorization: `Bearer ${resolveAuthToken()}` }
+        : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -532,12 +554,21 @@ export async function login(payload: LoginUserCommand): Promise<AuthResponse> {
     body: JSON.stringify(payload),
   });
   setAuthToken(res.accessToken ?? null);
+  try {
+    if (res.accessToken) localStorage.setItem("accessToken", res.accessToken);
+    if (res.refreshToken)
+      localStorage.setItem("refreshToken", res.refreshToken);
+  } catch {}
   return res;
 }
 
 export async function logout(): Promise<void> {
   await request<void>(`${authRoot()}/logout`, { method: "POST" });
   setAuthToken(null);
+  try {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+  } catch {}
 }
 
 export async function refreshToken(
@@ -548,6 +579,11 @@ export async function refreshToken(
     body: JSON.stringify(payload),
   });
   setAuthToken(res.accessToken ?? null);
+  try {
+    if (res.accessToken) localStorage.setItem("accessToken", res.accessToken);
+    if (res.refreshToken)
+      localStorage.setItem("refreshToken", res.refreshToken);
+  } catch {}
   return res;
 }
 
@@ -580,7 +616,9 @@ export async function createCourse(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(resolveAuthToken()
+        ? { Authorization: `Bearer ${resolveAuthToken()}` }
+        : {}),
     },
     body: JSON.stringify(payload),
   });
@@ -730,11 +768,12 @@ export async function getRoomMaintainSchedule(
 export async function createRoomMaintainSchedule(
   payload: CreateRoomMaintainScheduleCommand
 ): Promise<string | null> {
+  const t = resolveAuthToken();
   const res = await fetch(roomMaintainSchedulesRoot(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...(t ? { Authorization: `Bearer ${t}` } : {}),
     },
     body: JSON.stringify(payload),
   });
