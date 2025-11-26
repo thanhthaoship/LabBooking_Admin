@@ -236,3 +236,33 @@ export interface UserProfileResponse {
   userName?: string | null;
   roles: string[];
 }
+
+export interface CourseResponse {
+  id: GuidString;
+  courseCode?: string | null;
+  courseName?: string | null;
+  description?: string | null;
+  createdDate?: string | null;
+  isActive?: boolean | null;
+}
+
+export interface GetAllCoursesQuery {
+  searchPhrase?: string;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "CourseName" | "CourseCode";
+  sortDirection: SortDirection;
+}
+
+export interface CreateCourseCommand {
+  courseCode: string;
+  courseName: string;
+  description?: string | null;
+}
+
+export interface UpdateCourseCommand {
+  courseCode: string;
+  courseName: string;
+  description?: string | null;
+  isActive?: boolean;
+}

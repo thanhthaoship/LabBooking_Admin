@@ -28,6 +28,10 @@ import {
   LoginUserCommand,
   RefreshTokenRequest,
   UserProfileResponse,
+  CourseResponse,
+  GetAllCoursesQuery,
+  CreateCourseCommand,
+  UpdateCourseCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -92,6 +96,13 @@ function equipmentsRoot(): string {
   if (!base) return "/api/Equipments";
   if (base.endsWith("/api")) return `${base}/Equipments`;
   return `${base}/api/Equipments`;
+}
+
+function coursesRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Course";
+  if (base.endsWith("/api")) return `${base}/Course`;
+  return `${base}/api/Course`;
 }
 
 function authRoot(): string {
@@ -501,4 +512,70 @@ export async function refreshToken(
 
 export async function getProfile(): Promise<UserProfileResponse> {
   return request<UserProfileResponse>(`${authRoot()}/profile`);
+}
+
+export async function getCourses(
+  query: GetAllCoursesQuery
+): Promise<PagedResult<CourseResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<CourseResponse>>(
+    `${coursesRoot()}?${qs.toString()}`
+  );
+}
+
+export async function getCourse(id: string): Promise<CourseResponse> {
+  return request<CourseResponse>(`${coursesRoot()}/${id}`);
+}
+
+export async function createCourse(
+  payload: CreateCourseCommand
+): Promise<string | null> {
+  const res = await fetch(coursesRoot(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message = ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get("Location");
+  if (!location) {
+    try {
+      const body = await res.json();
+      const id = (body as any)?.Id ?? (body as any)?.id ?? null;
+      return id ?? null;
+    } catch {
+      return null;
+    }
+  }
+  const id = location.split("/").filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateCourse(
+  id: string,
+  payload: UpdateCourseCommand
+): Promise<void> {
+  await request<void>(`${coursesRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteCourse(id: string): Promise<void> {
+  await request<void>(`${coursesRoot()}/${id}`, { method: "DELETE" });
 }
