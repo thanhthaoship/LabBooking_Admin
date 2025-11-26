@@ -34,16 +34,24 @@ import { useTheme } from "@mui/material/styles";
 import { useEffect, useMemo, useState } from "react";
 import EmptyState from "../../components/EmptyState";
 import duotone from "../../components/icons/duotone";
-import { deleteSupport, getSupports } from "../../lib/services/api";
-import { GetAllSupportsQuery, SupportsResponse } from "../../lib/types";
+import {
+  deleteSupport,
+  getSupports,
+  updateSupport,
+} from "../../lib/services/api";
+import {
+  GetAllSupportsQuery,
+  SupportsResponse,
+  UpdateSupportCommand,
+} from "../../lib/types";
 import SupportDialogForm from "./components/SupportDialogForm";
-import { Close } from "@mui/icons-material";
+import { Check, Close, Message } from "@mui/icons-material";
 
 export default function SupportsPage() {
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState<"answered" | "unanswered">(
-    "unanswered"
-  );
+  const [filterStatus, setFilterStatus] = useState<
+    "Responded" | "Ignored" | "Pending"
+  >("Pending");
   const [sortBy, setSortBy] = useState<"Title" | "CreatedDate" | undefined>(
     "Title"
   );
@@ -105,11 +113,11 @@ export default function SupportsPage() {
   const filtered = useMemo(() => {
     const list = (data?.items ?? []).filter((x) => {
       const okStatus =
-        filterStatus === ""
-          ? true
-          : filterStatus === "answered"
-            ? !!x.answer
-            : !x.answer;
+        filterStatus === "Pending"
+          ? x.status === "Pending"
+          : filterStatus === "Ignored"
+            ? x.status === "Ignored"
+            : x.status === "Responded";
       const okLabel =
         x.title.toLowerCase().includes(search.toLowerCase()) ||
         x.content.toLowerCase().includes(search.toLowerCase());
@@ -121,11 +129,15 @@ export default function SupportsPage() {
   const handleDelete = async () => {
     if (!confirmDelete.id) return;
     try {
-      await deleteSupport(confirmDelete.id);
+      const payload: UpdateSupportCommand = {
+        answer: "",
+        status: 2,
+      };
+      await updateSupport(confirmDelete.id, payload);
       setConfirmDelete({ open: false, id: null });
       setRefreshSeq((s) => s + 1);
     } catch (e: any) {
-      setError(e?.message ?? "Xóa hỗ trợ thất bại");
+      setError(e?.message ?? "Cập nhật hỗ trợ thất bại");
       setConfirmDelete({ open: false, id: null });
     }
   };
@@ -175,8 +187,9 @@ export default function SupportsPage() {
             onChange={(e) => setFilterStatus(e.target.value as any)}
             sx={{ minWidth: 160 }}
           >
-            <MenuItem value="unanswered">Chưa trả lời</MenuItem>
-            <MenuItem value="answered">Đã trả lời</MenuItem>
+            <MenuItem value="Pending">Chưa trả lời</MenuItem>
+            <MenuItem value="Responded">Đã trả lời</MenuItem>
+            <MenuItem value="Ignored">Bỏ qua</MenuItem>
           </TextField>
           <Button
             onClick={() => setCreateOpen(true)}
@@ -275,18 +288,20 @@ export default function SupportsPage() {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        {s.answer ? (
+                        {s.status === "Responded" ? (
                           <Chip
                             label="Đã trả lời"
                             color="success"
                             size="small"
                           />
-                        ) : (
+                        ) : s.status === "Pending" ? (
                           <Chip
                             label="Chưa trả lời"
                             color="default"
                             size="small"
                           />
+                        ) : (
+                          <Chip label="Bỏ qua" color="error" size="small" />
                         )}
                       </TableCell>
                       <TableCell>
@@ -300,9 +315,9 @@ export default function SupportsPage() {
                           }}
                           size="small"
                           sx={{ ml: 1 }}
-                          startIcon={<EditOutlinedIcon />}
+                          startIcon={<Message />}
                         >
-                          Sửa
+                          Phản hồi
                         </Button>
                         <Button
                           onClick={() =>
@@ -311,9 +326,9 @@ export default function SupportsPage() {
                           size="small"
                           sx={{ ml: 1 }}
                           color="error"
-                          startIcon={<DeleteOutlineIcon />}
+                          startIcon={<Close />}
                         >
-                          Xóa
+                          Bỏ qua
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -401,8 +416,8 @@ export default function SupportsPage() {
         open={confirmDelete.open}
         onClose={() => setConfirmDelete({ open: false, id: null })}
       >
-        <DialogTitle>Xóa hỗ trợ</DialogTitle>
-        <DialogContent>Bạn có chắc chắn muốn xóa hỗ trợ này?</DialogContent>
+        <DialogTitle>Bỏ qua hỗ trợ</DialogTitle>
+        <DialogContent>Bạn có chắc chắn muốn bỏ qua hỗ trợ này?</DialogContent>
         <DialogActions>
           <Button
             onClick={() => setConfirmDelete({ open: false, id: null })}
@@ -412,11 +427,11 @@ export default function SupportsPage() {
           </Button>
           <Button
             onClick={handleDelete}
-            color="error"
+            color="primary"
             variant="contained"
-            startIcon={<DeleteOutlineIcon />}
+            startIcon={<Check />}
           >
-            Xóa
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>

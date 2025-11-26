@@ -18,6 +18,7 @@ export interface LabRoomResponse {
   location?: string | null;
   maximumLimit?: number | null;
   mainManagerId?: GuidString | null;
+  mainManagerName?: string | null;
   createdById?: GuidString | null;
   createdDate: string;
   isActive: boolean;
@@ -88,6 +89,7 @@ export interface SupportsResponse {
   title: string;
   content: string;
   answer?: string | null;
+  status: string;
   createdById: GuidString;
 }
 
@@ -102,12 +104,14 @@ export interface GetAllSupportsQuery {
 export interface CreateSupportCommand {
   title: string;
   content: string;
+  status?: number;
 }
 
 export interface UpdateSupportCommand {
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
   answer?: string | null;
+  status?: number;
 }
 
 export interface NotificationsResponse {
@@ -350,6 +354,24 @@ export interface UpdateRoomMaintainScheduleCommand {
   numberOfSlot?: number;
   roomMaintainStatus: RoomMaintainStatus;
   description?: string | null;
+}
+
+export interface UserResponse {
+  id: GuidString;
+  userName?: string | null;
+  email?: string | null;
+  phoneNumber?: string | null;
+  major?: string | null;
+  registrationDate: string;
+}
+
+export interface GetAllUsersQuery {
+  searchPhrase?: string;
+  roleName?: string;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30 | 50;
+  sortBy?: "UserName" | "Email" | "Major" | "RegistrationDate";
+  sortDirection: SortDirection;
 }
 
 export interface GetAllCoursesQuery {

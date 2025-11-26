@@ -43,6 +43,8 @@ import {
   GetAllRoomMaintainSchedulesQuery,
   CreateRoomMaintainScheduleCommand,
   UpdateRoomMaintainScheduleCommand,
+  UserResponse,
+  GetAllUsersQuery,
 } from "../types";
 
 let authToken: string | null = null;
@@ -142,6 +144,13 @@ function authRoot(): string {
   if (!base) return "/api/Auth";
   if (base.endsWith("/api")) return `${base}/Auth`;
   return `${base}/api/Auth`;
+}
+
+function usersRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/Users";
+  if (base.endsWith("/api")) return `${base}/Users`;
+  return `${base}/api/Users`;
 }
 
 function toQueryString(
@@ -762,9 +771,22 @@ export async function updateRoomMaintainSchedule(
     body: JSON.stringify(payload),
   });
 }
-
 export async function deleteRoomMaintainSchedule(id: string): Promise<void> {
   await request<void>(`${roomMaintainSchedulesRoot()}/${id}`, {
     method: "DELETE",
   });
+}
+
+export async function getUsers(
+  query: GetAllUsersQuery
+): Promise<PagedResult<UserResponse>> {
+  const qs = toQueryString({
+    SearchPhrase: query.searchPhrase,
+    RoleName: query.roleName,
+    PageNumber: query.pageNumber,
+    PageSize: query.pageSize,
+    SortBy: query.sortBy,
+    SortDirection: query.sortDirection,
+  });
+  return request<PagedResult<UserResponse>>(`${usersRoot()}?${qs}`);
 }

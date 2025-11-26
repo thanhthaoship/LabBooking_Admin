@@ -75,6 +75,7 @@ export default function SupportDialogForm({
         const payload: CreateSupportCommand = {
           title: title.trim(),
           content: content.trim(),
+          status: 0,
         };
         const id = await createSupport(payload);
         setSuccess("Tạo hỗ trợ thành công");
@@ -85,6 +86,7 @@ export default function SupportDialogForm({
           title: title.trim(),
           content: content.trim(),
           answer: answer.trim() || null,
+          status: 1,
         };
         await updateSupport(initial.id, payload);
         setSuccess("Cập nhật hỗ trợ thành công");
@@ -105,29 +107,7 @@ export default function SupportDialogForm({
       </DialogTitle>
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 0 }}>
-          <Grid item xs={12}>
-            <TextField
-              label="Tiêu đề"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              fullWidth
-              required
-              size="small"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Nội dung"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              fullWidth
-              required
-              size="small"
-              multiline
-              minRows={3}
-            />
-          </Grid>
-          {mode === "edit" && (
+          {mode === "edit" ? (
             <Grid item xs={12}>
               <TextField
                 label="Trả lời"
@@ -139,6 +119,31 @@ export default function SupportDialogForm({
                 minRows={2}
               />
             </Grid>
+          ) : (
+            <>
+              <Grid item xs={12}>
+                <TextField
+                  label="Tiêu đề"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  fullWidth
+                  required
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Nội dung"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  fullWidth
+                  required
+                  size="small"
+                  multiline
+                  minRows={3}
+                />
+              </Grid>
+            </>
           )}
         </Grid>
         {error && (

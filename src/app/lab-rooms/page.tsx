@@ -247,8 +247,8 @@ export default function LabRoomsPage() {
                   {data.items.map((room) => {
                     const equipmentCount = room.equipments?.length ?? 0;
                     const code = room.id.slice(0, 8).toUpperCase();
-                    const managerDisplay = room.mainManagerId
-                      ? room.mainManagerId.slice(0, 8).toUpperCase()
+                    const managerDisplay = room.mainManagerName
+                      ? room.mainManagerName
                       : "—";
                     return (
                       <TableRow

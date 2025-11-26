@@ -51,17 +51,29 @@ import RoomMaintainScheduleDialogForm from "./components/RoomMaintainScheduleDia
 export default function RoomMaintainSchedulesPage() {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [status, setStatus] = useState<RoomMaintainStatus | "All">("All");
-  const [sortBy, setSortBy] = useState<"StartTime" | "EndTime" | "RoomMaintainStatus" | undefined>("StartTime");
-  const [sortDirection, setSortDirection] = useState<"Ascending" | "Descending">("Ascending");
+  const [sortBy, setSortBy] = useState<
+    "StartTime" | "EndTime" | "RoomMaintainStatus" | undefined
+  >("StartTime");
+  const [sortDirection, setSortDirection] = useState<
+    "Ascending" | "Descending"
+  >("Ascending");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState<5 | 10 | 15 | 30>(10);
-  const [data, setData] = useState<{ items: RoomMaintainScheduleResponse[]; totalItemsCount: number } | null>(null);
+  const [data, setData] = useState<{
+    items: RoomMaintainScheduleResponse[];
+    totalItemsCount: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [editing, setEditing] = useState<RoomMaintainScheduleResponse | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; id: string | null }>({ open: false, id: null });
+  const [editing, setEditing] = useState<RoomMaintainScheduleResponse | null>(
+    null
+  );
+  const [confirmDelete, setConfirmDelete] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
   const [refreshSeq, setRefreshSeq] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -108,9 +120,13 @@ export default function RoomMaintainSchedulesPage() {
     return list;
   }, [data, searchPhrase]);
 
-  const handleSortClick = (field: "StartTime" | "EndTime" | "RoomMaintainStatus") => {
+  const handleSortClick = (
+    field: "StartTime" | "EndTime" | "RoomMaintainStatus"
+  ) => {
     if (sortBy === field) {
-      setSortDirection((prev) => (prev === "Ascending" ? "Descending" : "Ascending"));
+      setSortDirection((prev) =>
+        prev === "Ascending" ? "Descending" : "Ascending"
+      );
     } else {
       setSortBy(field);
       setSortDirection("Ascending");
@@ -131,11 +147,24 @@ export default function RoomMaintainSchedulesPage() {
 
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
-      <Stack direction={{ xs: "column", md: "row" }} alignItems={{ xs: "flex-start", md: "center" }} spacing={1} justifyContent="space_between" sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        spacing={1}
+        justifyContent="space-between"
+        sx={{ mb: 3 }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 600, color: "text.primary" }}
+        >
           Lịch bảo trì phòng
         </Typography>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "flex-start", md: "center" }}>
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems={{ xs: "flex-start", md: "center" }}
+        >
           <TextField
             size="small"
             placeholder="Tìm kiếm"
@@ -154,21 +183,26 @@ export default function RoomMaintainSchedulesPage() {
             }}
             sx={{ minWidth: { xs: 180, md: 280 }, bgcolor: "background.paper" }}
           />
-          <TextField select size="small" value={status} onChange={(e) => setStatus(e.target.value as any)} sx={{ minWidth: 180 }}>
+          <TextField
+            select
+            size="small"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as any)}
+            sx={{ minWidth: 180 }}
+          >
             <MenuItem value={"All"}>Tất cả trạng thái</MenuItem>
             <MenuItem value={"NotYet"}>Chưa thực hiện</MenuItem>
             <MenuItem value={"Done"}>Hoàn thành</MenuItem>
           </TextField>
-          <TextField select size="small" value={sortBy ?? "StartTime"} onChange={(e) => setSortBy(e.target.value as any)} sx={{ minWidth: 200 }}>
-            <MenuItem value={"StartTime"}>Sắp xếp theo bắt đầu</MenuItem>
-            <MenuItem value={"EndTime"}>Sắp xếp theo kết thúc</MenuItem>
-            <MenuItem value={"RoomMaintainStatus"}>Sắp xếp theo trạng thái</MenuItem>
-          </TextField>
-          <TextField select size="small" value={sortDirection} onChange={(e) => setSortDirection(e.target.value as any)} sx={{ minWidth: 160 }}>
-            <MenuItem value={"Ascending"}>Tăng dần</MenuItem>
-            <MenuItem value={"Descending"}>Giảm dần</MenuItem>
-          </TextField>
-          <Button onClick={() => setCreateOpen(true)} variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />}>Thêm lịch</Button>
+
+          <Button
+            onClick={() => setCreateOpen(true)}
+            variant="contained"
+            color="primary"
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            Thêm lịch
+          </Button>
         </Stack>
       </Stack>
 
@@ -195,57 +229,164 @@ export default function RoomMaintainSchedulesPage() {
               />
             </Box>
           ) : !isMobile ? (
-            <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
               <Table aria-label="Danh sách lịch bảo trì phòng">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main", color: "white", "&:hover": { backgroundColor: "primary.main" } }}>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Phòng</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "StartTime"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("StartTime")}>
+                  <TableRow
+                    sx={{
+                      bgcolor: "primary.main",
+                      color: "white",
+                      "&:hover": { backgroundColor: "primary.main" },
+                    }}
+                  >
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Phòng
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "StartTime"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() => handleSortClick("StartTime")}
+                      >
                         Bắt đầu
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "EndTime"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("EndTime")}>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "EndTime"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() => handleSortClick("EndTime")}
+                      >
                         Kết thúc
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Nhiều ngày</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Cả ngày</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Số slot</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "RoomMaintainStatus"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("RoomMaintainStatus")}>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Nhiều ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Cả ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Số slot
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "RoomMaintainStatus"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() => handleSortClick("RoomMaintainStatus")}
+                      >
                         Trạng thái
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Mô tả</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }} />
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Mô tả
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    />
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {filtered.map((s) => (
-                    <TableRow key={s.id} hover sx={{ "& td": { borderBottom: "none" } }}>
+                    <TableRow
+                      key={s.id}
+                      hover
+                      sx={{ "& td": { borderBottom: "none" } }}
+                    >
                       <TableCell>
-                        <Chip label={s.labRoomId.slice(0, 8).toUpperCase()} size="small" />
+                        <Chip
+                          label={s.labRoomId.slice(0, 8).toUpperCase()}
+                          size="small"
+                        />
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{s.startTime ? new Date(s.startTime).toLocaleString() : "—"}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {s.startTime
+                            ? new Date(s.startTime).toLocaleString()
+                            : "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{s.endTime ? new Date(s.endTime).toLocaleString() : "—"}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {s.endTime
+                            ? new Date(s.endTime).toLocaleString()
+                            : "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>{s.isManyDay ? "Có" : "Không"}</TableCell>
                       <TableCell>{s.isAllDay ? "Có" : "Không"}</TableCell>
                       <TableCell>{s.numberOfSlot ?? "—"}</TableCell>
                       <TableCell>
-                        {s.roomMaintainStatus === "Done" ? <Chip label="Hoàn thành" color="success" size="small" /> : <Chip label="Chưa" size="small" />}
+                        {s.roomMaintainStatus === "Done" ? (
+                          <Chip
+                            label="Hoàn thành"
+                            color="success"
+                            size="small"
+                          />
+                        ) : (
+                          <Chip label="Chưa" size="small" />
+                        )}
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{(s.description ?? "").length > 80 ? (s.description ?? "").slice(0, 80) + "…" : s.description}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {(s.description ?? "").length > 80
+                            ? (s.description ?? "").slice(0, 80) + "…"
+                            : s.description}
+                        </Typography>
                       </TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => { setEditing(s); setEditOpen(true); }} size="small" sx={{ ml: 1 }} startIcon={<EditOutlinedIcon />}>Sửa</Button>
-                        <Button onClick={() => setConfirmDelete({ open: true, id: s.id })} size="small" sx={{ ml: 1 }} color="error" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+                        <Button
+                          onClick={() => {
+                            setEditing(s);
+                            setEditOpen(true);
+                          }}
+                          size="small"
+                          sx={{ ml: 1 }}
+                          startIcon={<EditOutlinedIcon />}
+                        >
+                          Sửa
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            setConfirmDelete({ open: true, id: s.id })
+                          }
+                          size="small"
+                          sx={{ ml: 1 }}
+                          color="error"
+                          startIcon={<DeleteOutlineIcon />}
+                        >
+                          Xóa
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -272,16 +413,61 @@ export default function RoomMaintainSchedulesPage() {
                   <CardContent>
                     <Stack spacing={1}>
                       <Stack direction="row" spacing={1} alignItems="center">
-                        <Chip label={s.labRoomId.slice(0, 8).toUpperCase()} size="small" />
-                        <Chip label={s.roomMaintainStatus ?? "NotYet"} size="small" color={s.roomMaintainStatus === "Done" ? "success" : "default"} />
+                        <Chip
+                          label={s.labRoomId.slice(0, 8).toUpperCase()}
+                          size="small"
+                        />
+                        <Chip
+                          label={s.roomMaintainStatus ?? "NotYet"}
+                          size="small"
+                          color={
+                            s.roomMaintainStatus === "Done"
+                              ? "success"
+                              : "default"
+                          }
+                        />
                       </Stack>
-                      <Typography variant="body2" color="text.secondary">BĐ: {s.startTime ? new Date(s.startTime).toLocaleString() : "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">KT: {s.endTime ? new Date(s.endTime).toLocaleString() : "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">Slot: {s.numberOfSlot ?? "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">{(s.description ?? "").length > 120 ? (s.description ?? "").slice(0, 120) + "…" : s.description}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        BĐ:{" "}
+                        {s.startTime
+                          ? new Date(s.startTime).toLocaleString()
+                          : "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        KT:{" "}
+                        {s.endTime ? new Date(s.endTime).toLocaleString() : "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Slot: {s.numberOfSlot ?? "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {(s.description ?? "").length > 120
+                          ? (s.description ?? "").slice(0, 120) + "…"
+                          : s.description}
+                      </Typography>
                       <Box>
-                        <Button onClick={() => { setEditing(s); setEditOpen(true); }} size="small" sx={{ ml: 0 }} startIcon={<EditOutlinedIcon />}>Sửa</Button>
-                        <Button onClick={() => setConfirmDelete({ open: true, id: s.id })} size="small" sx={{ ml: 1 }} color="error" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+                        <Button
+                          onClick={() => {
+                            setEditing(s);
+                            setEditOpen(true);
+                          }}
+                          size="small"
+                          sx={{ ml: 0 }}
+                          startIcon={<EditOutlinedIcon />}
+                        >
+                          Sửa
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            setConfirmDelete({ open: true, id: s.id })
+                          }
+                          size="small"
+                          sx={{ ml: 1 }}
+                          color="error"
+                          startIcon={<DeleteOutlineIcon />}
+                        >
+                          Xóa
+                        </Button>
                       </Box>
                     </Stack>
                   </CardContent>
@@ -310,12 +496,29 @@ export default function RoomMaintainSchedulesPage() {
         onSaved={() => setRefreshSeq((s) => s + 1)}
       />
 
-      <Dialog open={confirmDelete.open} onClose={() => setConfirmDelete({ open: false, id: null })}>
+      <Dialog
+        open={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+      >
         <DialogTitle>Xóa lịch bảo trì phòng</DialogTitle>
-        <DialogContent>Bạn có chắc chắn muốn xóa lịch bảo trì phòng này?</DialogContent>
+        <DialogContent>
+          Bạn có chắc chắn muốn xóa lịch bảo trì phòng này?
+        </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDelete({ open: false, id: null })} startIcon={<CloseIcon />}>Hủy</Button>
-          <Button onClick={handleDelete} color="error" variant="contained" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+          <Button
+            onClick={() => setConfirmDelete({ open: false, id: null })}
+            startIcon={<CloseIcon />}
+          >
+            Hủy
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            startIcon={<DeleteOutlineIcon />}
+          >
+            Xóa
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

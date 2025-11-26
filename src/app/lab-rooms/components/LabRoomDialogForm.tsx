@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   Alert,
   Box,
@@ -9,24 +11,30 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   FormControlLabel,
   Grid,
+  MenuItem,
+  Stack,
   Switch,
   TextField,
-  Divider,
-  Stack,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SaveIcon from "@mui/icons-material/Save";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useEffect, useMemo, useState } from "react";
+import { MdLocationOn, MdMeetingRoom } from "react-icons/md";
+import {
+  createLabRoom,
+  getUsers,
+  updateLabRoom,
+} from "../../../lib/services/api";
 import {
   CreateLabRoomCommand,
+  GetAllUsersQuery,
   LabRoomResponse,
+  PagedResult,
   UpdateLabRoomCommand,
+  UserResponse,
 } from "../../../lib/types";
-import { createLabRoom, updateLabRoom } from "../../../lib/services/api";
-import { MdMeetingRoom, MdLocationOn, MdManageAccounts } from "react-icons/md";
 
 type Mode = "create" | "edit";
 
@@ -47,10 +55,25 @@ export default function LabRoomDialogForm({
   const [location, setLocation] = useState<string | "">("");
   const [maximumLimit, setMaximumLimit] = useState<string>("");
   const [mainManagerId, setMainManagerId] = useState<string>("");
+  const [managers, setManagers] = useState<UserResponse[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+    const q: GetAllUsersQuery = {
+      searchPhrase: undefined,
+      roleName: "Manager",
+      pageNumber: 1,
+      pageSize: 50,
+      sortBy: "UserName",
+      sortDirection: "Ascending",
+    };
+    getUsers(q)
+      .then((res: PagedResult<UserResponse>) => setManagers(res.items))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (mode === "edit" && initial) {
@@ -191,26 +214,23 @@ export default function LabRoomDialogForm({
             />
           </Grid>
 
-          {/* Manager ID */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label="Manager Id"
+              select
+              label="Quản lý"
               value={mainManagerId}
               onChange={(e) => setMainManagerId(e.target.value)}
               fullWidth
               size="small"
-              InputProps={{
-                startAdornment: (
-                  <MdManageAccounts
-                    size={20}
-                    style={{ marginRight: 8, opacity: 0.7 }}
-                  />
-                ),
-              }}
-            />
+            >
+              {managers.map((u) => (
+                <MenuItem key={u.id} value={u.id}>
+                  {u.userName || u.email || u.id.slice(0, 8).toUpperCase()}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
 
-          {/* Active Switch */}
           {mode === "edit" && (
             <Grid item xs={12}>
               <FormControlLabel
@@ -243,13 +263,22 @@ export default function LabRoomDialogForm({
 
       {/* Actions */}
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onClose} color="inherit" sx={{ textTransform: "none" }} startIcon={<CloseIcon />}>Hủy</Button>
+        <Button
+          onClick={onClose}
+          color="inherit"
+          sx={{ textTransform: "none" }}
+          startIcon={<CloseIcon />}
+        >
+          Hủy
+        </Button>
         <Button
           onClick={handleSubmit}
           disabled={!canSubmit}
           variant="contained"
           sx={{ textTransform: "none", px: 3, borderRadius: 2 }}
-          startIcon={mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />}
+          startIcon={
+            mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />
+          }
         >
           {mode === "create" ? "Tạo mới" : "Lưu thay đổi"}
         </Button>

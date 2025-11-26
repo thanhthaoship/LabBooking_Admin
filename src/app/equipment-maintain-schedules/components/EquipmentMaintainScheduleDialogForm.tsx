@@ -111,11 +111,26 @@ export default function EquipmentMaintainScheduleDialogForm({
   const canSubmit = useMemo(() => {
     const okEq = equipmentId.trim().length > 0;
     const okDesc = description.trim().length <= 1000;
-    const okSlot = numberOfSlot === "" || (typeof numberOfSlot === "number" && numberOfSlot > 0);
+    const okSlot =
+      numberOfSlot === "" ||
+      (typeof numberOfSlot === "number" && numberOfSlot > 0);
     const okTime = timeOrderValid;
-    if (mode === "create") return okEq && isManyDay !== undefined && okDesc && okSlot && okTime && !saving;
-    return okEq && isManyDay !== undefined && okDesc && okSlot && okTime && !saving;
-  }, [equipmentId, isManyDay, description, numberOfSlot, timeOrderValid, mode, saving]);
+    if (mode === "create")
+      return (
+        okEq && isManyDay !== undefined && okDesc && okSlot && okTime && !saving
+      );
+    return (
+      okEq && isManyDay !== undefined && okDesc && okSlot && okTime && !saving
+    );
+  }, [
+    equipmentId,
+    isManyDay,
+    description,
+    numberOfSlot,
+    timeOrderValid,
+    mode,
+    saving,
+  ]);
 
   const handleSubmit = async () => {
     setSaving(true);
@@ -129,7 +144,8 @@ export default function EquipmentMaintainScheduleDialogForm({
           isAllDay,
           startTime: startTime ? startTime.toISOString() : undefined,
           endTime: endTime ? endTime.toISOString() : undefined,
-          numberOfSlot: typeof numberOfSlot === "number" ? numberOfSlot : undefined,
+          numberOfSlot:
+            typeof numberOfSlot === "number" ? numberOfSlot : undefined,
           description: description.trim() || null,
         };
         const id = await createEquipmentMaintainSchedule(payload);
@@ -143,7 +159,8 @@ export default function EquipmentMaintainScheduleDialogForm({
           isAllDay,
           startTime: startTime ? startTime.toISOString() : undefined,
           endTime: endTime ? endTime.toISOString() : undefined,
-          numberOfSlot: typeof numberOfSlot === "number" ? numberOfSlot : undefined,
+          numberOfSlot:
+            typeof numberOfSlot === "number" ? numberOfSlot : undefined,
           equimentpMaintainStatus: status,
           description: description.trim() || null,
         };
@@ -161,19 +178,47 @@ export default function EquipmentMaintainScheduleDialogForm({
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle>{mode === "create" ? "Thêm lịch bảo trì" : "Sửa lịch bảo trì"}</DialogTitle>
+      <DialogTitle>
+        {mode === "create" ? "Thêm lịch bảo trì" : "Sửa lịch bảo trì"}
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={2} sx={{ mt: 0 }}>
           <Grid item xs={12} md={6}>
-            <TextField select label="Thiết bị" value={equipmentId} onChange={(e) => setEquipmentId(e.target.value)} fullWidth required size="small">
+            <TextField
+              select
+              label="Thiết bị"
+              value={equipmentId}
+              onChange={(e) => setEquipmentId(e.target.value)}
+              fullWidth
+              required
+              size="small"
+            >
               {equipments.map((eq) => (
-                <MenuItem key={eq.id} value={eq.id}>{eq.equipmentName || eq.id.slice(0, 8).toUpperCase()}</MenuItem>
+                <MenuItem key={eq.id} value={eq.id}>
+                  {eq.equipmentName || eq.id.slice(0, 8).toUpperCase()}
+                </MenuItem>
               ))}
             </TextField>
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormControlLabel control={<Switch checked={isManyDay} onChange={(e) => setIsManyDay(e.target.checked)} />} label="Nhiều ngày" />
-            <FormControlLabel control={<Switch checked={isAllDay} onChange={(e) => setIsAllDay(e.target.checked)} />} label="Cả ngày" />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isManyDay}
+                  onChange={(e) => setIsManyDay(e.target.checked)}
+                />
+              }
+              label="Nhiều ngày"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isAllDay}
+                  onChange={(e) => setIsAllDay(e.target.checked)}
+                />
+              }
+              label="Cả ngày"
+            />
           </Grid>
           <Grid item xs={12} md={6}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -191,7 +236,16 @@ export default function EquipmentMaintainScheduleDialogForm({
                 label="Thời gian kết thúc"
                 value={endTime}
                 onChange={(v) => setEndTime(v)}
-                slotProps={{ textField: { fullWidth: true, size: "small", error: !timeOrderValid, helperText: !timeOrderValid ? "Kết thúc phải sau bắt đầu" : undefined } }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    error: !timeOrderValid,
+                    helperText: !timeOrderValid
+                      ? "Kết thúc phải sau bắt đầu"
+                      : undefined,
+                  },
+                }}
               />
             </LocalizationProvider>
           </Grid>
@@ -202,6 +256,7 @@ export default function EquipmentMaintainScheduleDialogForm({
               onChange={(e) => {
                 const v = e.target.value;
                 const n = Number(v);
+                console.log("n", n);
                 setNumberOfSlot(Number.isNaN(n) ? "" : n);
               }}
               fullWidth
@@ -210,13 +265,34 @@ export default function EquipmentMaintainScheduleDialogForm({
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Mô tả" value={description} onChange={(e) => setDescription(e.target.value)} fullWidth size="small" multiline minRows={3} inputProps={{ maxLength: 1000 }} />
+            <TextField
+              label="Mô tả"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              fullWidth
+              size="small"
+              multiline
+              minRows={3}
+              inputProps={{ maxLength: 1000 }}
+            />
           </Grid>
           {mode === "edit" && (
             <Grid item xs={12} md={6}>
-              <TextField select label="Trạng thái" value={status} onChange={(e) => setStatus(e.target.value as EquimentpMaintainStatus)} fullWidth required size="small">
+              <TextField
+                select
+                label="Trạng thái"
+                value={status}
+                onChange={(e) =>
+                  setStatus(e.target.value as EquimentpMaintainStatus)
+                }
+                fullWidth
+                required
+                size="small"
+              >
                 {(["NotYet", "Done"] as EquimentpMaintainStatus[]).map((s) => (
-                  <MenuItem key={s} value={s}>{s}</MenuItem>
+                  <MenuItem key={s} value={s}>
+                    {s}
+                  </MenuItem>
                 ))}
               </TextField>
             </Grid>
@@ -234,8 +310,20 @@ export default function EquipmentMaintainScheduleDialogForm({
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} startIcon={<CloseIcon />}>Hủy</Button>
-        <Button onClick={handleSubmit} disabled={!canSubmit} variant="contained" color="primary" startIcon={mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />}>{mode === "create" ? "Tạo" : "Lưu"}</Button>
+        <Button onClick={onClose} startIcon={<CloseIcon />}>
+          Hủy
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          variant="contained"
+          color="primary"
+          startIcon={
+            mode === "create" ? <AddCircleOutlineIcon /> : <SaveIcon />
+          }
+        >
+          {mode === "create" ? "Tạo" : "Lưu"}
+        </Button>
       </DialogActions>
     </Dialog>
   );
