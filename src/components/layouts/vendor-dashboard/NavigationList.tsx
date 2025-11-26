@@ -58,10 +58,16 @@ export const navigationGroups: NavigationGroup[] = [
         path: "/notifications",
       },
       {
-        name: "Sự cố",
-        icon: duotone.ElementHub,
-        pathSegment: "incidents",
-        path: "/incidents",
+        name: "Khóa học",
+        icon: duotone.UserTie,
+        pathSegment: "courses",
+        path: "/courses",
+      },
+      {
+        name: "Tài khoản bảo vệ",
+        icon: duotone.Accounts,
+        pathSegment: "accounts",
+        path: "/accounts",
       },
       {
         name: "Chính sách",
