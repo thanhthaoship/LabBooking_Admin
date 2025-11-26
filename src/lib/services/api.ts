@@ -35,6 +35,10 @@ import {
   SecurityGuardResponse,
   CreateSecurityGuardCommand,
   UpdateSecurityGuardCommand,
+  EquipmentMaintainScheduleResponse,
+  GetAllEquipmentMaintainSchedulesQuery,
+  CreateEquipmentMaintainScheduleCommand,
+  UpdateEquipmentMaintainScheduleCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -113,6 +117,13 @@ function securityGuardsRoot(): string {
   if (!base) return "/api/SecurityGuard";
   if (base.endsWith("/api")) return `${base}/SecurityGuard`;
   return `${base}/api/SecurityGuard`;
+}
+
+function equipmentMaintainSchedulesRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/EquipmentMaintainSchedules";
+  if (base.endsWith("/api")) return `${base}/EquipmentMaintainSchedules`;
+  return `${base}/api/EquipmentMaintainSchedules`;
 }
 
 function authRoot(): string {
@@ -557,7 +568,8 @@ export async function createCourse(
     let message = res.statusText;
     try {
       const data = await res.json();
-      message = ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
     } catch {}
     const err: ApiError = { status: res.status, message };
     throw err;
@@ -600,7 +612,9 @@ export async function createSecurityGuard(
   return res.message ?? "Created";
 }
 
-export async function getSecurityGuard(id: string): Promise<SecurityGuardResponse> {
+export async function getSecurityGuard(
+  id: string
+): Promise<SecurityGuardResponse> {
   return request<SecurityGuardResponse>(`${securityGuardsRoot()}/${id}`);
 }
 
@@ -616,4 +630,55 @@ export async function updateSecurityGuard(
 
 export async function deleteSecurityGuard(id: string): Promise<void> {
   await request<void>(`${securityGuardsRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function getEquipmentMaintainSchedules(
+  query: GetAllEquipmentMaintainSchedulesQuery
+): Promise<PagedResult<EquipmentMaintainScheduleResponse>> {
+  const qs = new URLSearchParams();
+  if (query.searchPhrase) qs.append("SearchPhrase", query.searchPhrase);
+  if (query.status) qs.append("Status", query.status);
+  qs.append("PageNumber", String(query.pageNumber));
+  qs.append("PageSize", String(query.pageSize));
+  if (query.sortBy) qs.append("SortBy", query.sortBy);
+  qs.append("SortDirection", query.sortDirection);
+  return request<PagedResult<EquipmentMaintainScheduleResponse>>(
+    `${equipmentMaintainSchedulesRoot()}?${qs.toString()}`
+  );
+}
+
+export async function getEquipmentMaintainSchedule(
+  id: string
+): Promise<EquipmentMaintainScheduleResponse> {
+  return request<EquipmentMaintainScheduleResponse>(
+    `${equipmentMaintainSchedulesRoot()}/${id}`
+  );
+}
+
+export async function createEquipmentMaintainSchedule(
+  payload: CreateEquipmentMaintainScheduleCommand
+): Promise<string | null> {
+  const res = await request<{ id: string }>(equipmentMaintainSchedulesRoot(), {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  return (res as any)?.id ?? null;
+}
+
+export async function updateEquipmentMaintainSchedule(
+  id: string,
+  payload: UpdateEquipmentMaintainScheduleCommand
+): Promise<void> {
+  await request<void>(`${equipmentMaintainSchedulesRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteEquipmentMaintainSchedule(
+  id: string
+): Promise<void> {
+  await request<void>(`${equipmentMaintainSchedulesRoot()}/${id}`, {
+    method: "DELETE",
+  });
 }

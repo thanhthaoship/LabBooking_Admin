@@ -264,6 +264,50 @@ export interface UpdateSecurityGuardCommand {
   phoneNumber?: string | null;
 }
 
+export type EquimentpMaintainStatus = "Done" | "NotYet";
+
+export interface EquipmentMaintainScheduleResponse {
+  id: GuidString;
+  equipmentId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean | null;
+  startTime?: string | null;
+  endTime?: string | null;
+  numberOfSlot?: number | null;
+  equimentpMaintainStatus?: EquimentpMaintainStatus | null;
+  description?: string | null;
+}
+
+export interface GetAllEquipmentMaintainSchedulesQuery {
+  searchPhrase?: string;
+  status?: EquimentpMaintainStatus;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "StartTime" | "EndTime" | "EquimentpMaintainStatus";
+  sortDirection: SortDirection;
+}
+
+export interface CreateEquipmentMaintainScheduleCommand {
+  equipmentId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean;
+  startTime?: string;
+  endTime?: string;
+  numberOfSlot?: number;
+  description?: string | null;
+}
+
+export interface UpdateEquipmentMaintainScheduleCommand {
+  equipmentId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean;
+  startTime?: string;
+  endTime?: string;
+  numberOfSlot?: number;
+  equimentpMaintainStatus: EquimentpMaintainStatus;
+  description?: string | null;
+}
+
 export interface GetAllCoursesQuery {
   searchPhrase?: string;
   pageNumber: number;

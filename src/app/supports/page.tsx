@@ -41,9 +41,9 @@ import { Close } from "@mui/icons-material";
 
 export default function SupportsPage() {
   const [search, setSearch] = useState("");
-  const [filterStatus, setFilterStatus] = useState<
-    "all" | "answered" | "unanswered"
-  >("all");
+  const [filterStatus, setFilterStatus] = useState<"answered" | "unanswered">(
+    "unanswered"
+  );
   const [sortBy, setSortBy] = useState<"Title" | "CreatedDate" | undefined>(
     "Title"
   );
@@ -175,7 +175,6 @@ export default function SupportsPage() {
             onChange={(e) => setFilterStatus(e.target.value as any)}
             sx={{ minWidth: 160 }}
           >
-            <MenuItem value={"all"}>Tất cả</MenuItem>
             <MenuItem value="unanswered">Chưa trả lời</MenuItem>
             <MenuItem value="answered">Đã trả lời</MenuItem>
           </TextField>

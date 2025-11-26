@@ -66,8 +66,8 @@ export const navigationGroups: NavigationGroup[] = [
       {
         name: "Tài khoản bảo vệ",
         icon: duotone.Accounts,
-        pathSegment: "accounts",
-        path: "/accounts",
+        pathSegment: "security-guards",
+        path: "/security-guards",
       },
       {
         name: "Lịch bảo trì phòng lab",
@@ -78,8 +78,8 @@ export const navigationGroups: NavigationGroup[] = [
       {
         name: "Lịch bảo trì thiết bị",
         icon: duotone.Calender,
-        pathSegment: "equipment-maintenances",
-        path: "/equipment-maintenances",
+        pathSegment: "equipment-maintain-schedules",
+        path: "/equipment-maintain-schedules",
       },
       {
         name: "Chính sách",
