@@ -246,6 +246,24 @@ export interface CourseResponse {
   isActive?: boolean | null;
 }
 
+export interface SecurityGuardResponse {
+  id: GuidString;
+  email: string;
+  userName: string;
+  phoneNumber?: string | null;
+}
+
+export interface CreateSecurityGuardCommand {
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface UpdateSecurityGuardCommand {
+  email: string;
+  phoneNumber?: string | null;
+}
+
 export interface GetAllCoursesQuery {
   searchPhrase?: string;
   pageNumber: number;

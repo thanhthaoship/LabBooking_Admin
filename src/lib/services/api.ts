@@ -32,6 +32,9 @@ import {
   GetAllCoursesQuery,
   CreateCourseCommand,
   UpdateCourseCommand,
+  SecurityGuardResponse,
+  CreateSecurityGuardCommand,
+  UpdateSecurityGuardCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -103,6 +106,13 @@ function coursesRoot(): string {
   if (!base) return "/api/Course";
   if (base.endsWith("/api")) return `${base}/Course`;
   return `${base}/api/Course`;
+}
+
+function securityGuardsRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/SecurityGuard";
+  if (base.endsWith("/api")) return `${base}/SecurityGuard`;
+  return `${base}/api/SecurityGuard`;
 }
 
 function authRoot(): string {
@@ -578,4 +588,32 @@ export async function updateCourse(
 
 export async function deleteCourse(id: string): Promise<void> {
   await request<void>(`${coursesRoot()}/${id}`, { method: "DELETE" });
+}
+
+export async function createSecurityGuard(
+  payload: CreateSecurityGuardCommand
+): Promise<string> {
+  const res = await request<{ message: string }>(securityGuardsRoot(), {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+  return res.message ?? "Created";
+}
+
+export async function getSecurityGuard(id: string): Promise<SecurityGuardResponse> {
+  return request<SecurityGuardResponse>(`${securityGuardsRoot()}/${id}`);
+}
+
+export async function updateSecurityGuard(
+  id: string,
+  payload: UpdateSecurityGuardCommand
+): Promise<void> {
+  await request<void>(`${securityGuardsRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteSecurityGuard(id: string): Promise<void> {
+  await request<void>(`${securityGuardsRoot()}/${id}`, { method: "DELETE" });
 }

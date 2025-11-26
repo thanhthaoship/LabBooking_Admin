@@ -59,7 +59,7 @@ export const navigationGroups: NavigationGroup[] = [
       },
       {
         name: "Khóa học",
-        icon: duotone.UserTie,
+        icon: duotone.Order,
         pathSegment: "courses",
         path: "/courses",
       },
@@ -68,6 +68,18 @@ export const navigationGroups: NavigationGroup[] = [
         icon: duotone.Accounts,
         pathSegment: "accounts",
         path: "/accounts",
+      },
+      {
+        name: "Lịch bảo trì phòng lab",
+        icon: duotone.Calender,
+        pathSegment: "lab-maintenances",
+        path: "/lab-maintenances",
+      },
+      {
+        name: "Lịch bảo trì thiết bị",
+        icon: duotone.Calender,
+        pathSegment: "equipment-maintenances",
+        path: "/equipment-maintenances",
       },
       {
         name: "Chính sách",
