@@ -250,13 +250,6 @@ export default function SlotsPage() {
                       <TableCell>{slot.endTime}</TableCell>
                       <TableCell align="right">
                         <Button
-                          component={Link}
-                          href={`/slots/${slot.id}`}
-                          size="small"
-                        >
-                          Xem
-                        </Button>
-                        <Button
                           onClick={() => {
                             setEditing(slot);
                             setEditOpen(true);
