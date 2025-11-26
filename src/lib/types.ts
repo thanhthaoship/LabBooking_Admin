@@ -308,6 +308,50 @@ export interface UpdateEquipmentMaintainScheduleCommand {
   description?: string | null;
 }
 
+export type RoomMaintainStatus = "Done" | "NotYet";
+
+export interface RoomMaintainScheduleResponse {
+  id: GuidString;
+  labRoomId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean | null;
+  startTime?: string | null;
+  endTime?: string | null;
+  numberOfSlot?: number | null;
+  roomMaintainStatus?: RoomMaintainStatus | null;
+  description?: string | null;
+}
+
+export interface GetAllRoomMaintainSchedulesQuery {
+  searchPhrase?: string;
+  status?: RoomMaintainStatus;
+  pageNumber: number;
+  pageSize: 5 | 10 | 15 | 30;
+  sortBy?: "StartTime" | "EndTime" | "RoomMaintainStatus";
+  sortDirection: SortDirection;
+}
+
+export interface CreateRoomMaintainScheduleCommand {
+  labRoomId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean;
+  startTime?: string;
+  endTime?: string;
+  numberOfSlot?: number;
+  description?: string | null;
+}
+
+export interface UpdateRoomMaintainScheduleCommand {
+  labRoomId: GuidString;
+  isManyDay: boolean;
+  isAllDay?: boolean;
+  startTime?: string;
+  endTime?: string;
+  numberOfSlot?: number;
+  roomMaintainStatus: RoomMaintainStatus;
+  description?: string | null;
+}
+
 export interface GetAllCoursesQuery {
   searchPhrase?: string;
   pageNumber: number;

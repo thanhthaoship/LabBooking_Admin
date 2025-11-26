@@ -51,17 +51,28 @@ import EquipmentMaintainScheduleDialogForm from "./components/EquipmentMaintainS
 export default function EquipmentMaintainSchedulesPage() {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [status, setStatus] = useState<EquimentpMaintainStatus | "All">("All");
-  const [sortBy, setSortBy] = useState<"StartTime" | "EndTime" | "EquimentpMaintainStatus" | undefined>("StartTime");
-  const [sortDirection, setSortDirection] = useState<"Ascending" | "Descending">("Ascending");
+  const [sortBy, setSortBy] = useState<
+    "StartTime" | "EndTime" | "EquimentpMaintainStatus" | undefined
+  >("StartTime");
+  const [sortDirection, setSortDirection] = useState<
+    "Ascending" | "Descending"
+  >("Ascending");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState<5 | 10 | 15 | 30>(10);
-  const [data, setData] = useState<{ items: EquipmentMaintainScheduleResponse[]; totalItemsCount: number } | null>(null);
+  const [data, setData] = useState<{
+    items: EquipmentMaintainScheduleResponse[];
+    totalItemsCount: number;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [editing, setEditing] = useState<EquipmentMaintainScheduleResponse | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; id: string | null }>({ open: false, id: null });
+  const [editing, setEditing] =
+    useState<EquipmentMaintainScheduleResponse | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
   const [refreshSeq, setRefreshSeq] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -69,7 +80,8 @@ export default function EquipmentMaintainSchedulesPage() {
   const query: GetAllEquipmentMaintainSchedulesQuery = useMemo(
     () => ({
       searchPhrase: searchPhrase || undefined,
-      status: status === "All" ? undefined : (status as EquimentpMaintainStatus),
+      status:
+        status === "All" ? undefined : (status as EquimentpMaintainStatus),
       pageNumber: page + 1,
       pageSize,
       sortBy,
@@ -102,15 +114,20 @@ export default function EquipmentMaintainSchedulesPage() {
 
   const filtered = useMemo(() => {
     const list = (data?.items ?? []).filter((x) => {
-      const label = `${x.equipmentId ?? ""} ${x.description ?? ""}`.toLowerCase();
+      const label =
+        `${x.equipmentId ?? ""} ${x.description ?? ""}`.toLowerCase();
       return label.includes(searchPhrase.toLowerCase());
     });
     return list;
   }, [data, searchPhrase]);
 
-  const handleSortClick = (field: "StartTime" | "EndTime" | "EquimentpMaintainStatus") => {
+  const handleSortClick = (
+    field: "StartTime" | "EndTime" | "EquimentpMaintainStatus"
+  ) => {
     if (sortBy === field) {
-      setSortDirection((prev) => (prev === "Ascending" ? "Descending" : "Ascending"));
+      setSortDirection((prev) =>
+        prev === "Ascending" ? "Descending" : "Ascending"
+      );
     } else {
       setSortBy(field);
       setSortDirection("Ascending");
@@ -131,11 +148,24 @@ export default function EquipmentMaintainSchedulesPage() {
 
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3, bgcolor: "background.default" }}>
-      <Stack direction={{ xs: "column", md: "row" }} alignItems={{ xs: "flex-start", md: "center" }} spacing={1} justifyContent="space-between" sx={{ mb: 3 }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, color: "text.primary" }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        alignItems={{ xs: "flex-start", md: "center" }}
+        spacing={1}
+        justifyContent="space-between"
+        sx={{ mb: 3 }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 600, color: "text.primary" }}
+        >
           Lịch bảo trì thiết bị
         </Typography>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ xs: "flex-start", md: "center" }}>
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems={{ xs: "flex-start", md: "center" }}
+        >
           <TextField
             size="small"
             placeholder="Tìm kiếm"
@@ -154,21 +184,26 @@ export default function EquipmentMaintainSchedulesPage() {
             }}
             sx={{ minWidth: { xs: 180, md: 280 }, bgcolor: "background.paper" }}
           />
-          <TextField select size="small" value={status} onChange={(e) => setStatus(e.target.value as any)} sx={{ minWidth: 180 }}>
+          <TextField
+            select
+            size="small"
+            value={status}
+            onChange={(e) => setStatus(e.target.value as any)}
+            sx={{ minWidth: 180 }}
+          >
             <MenuItem value={"All"}>Tất cả trạng thái</MenuItem>
             <MenuItem value={"NotYet"}>Chưa thực hiện</MenuItem>
             <MenuItem value={"Done"}>Hoàn thành</MenuItem>
           </TextField>
-          <TextField select size="small" value={sortBy ?? "StartTime"} onChange={(e) => setSortBy(e.target.value as any)} sx={{ minWidth: 200 }}>
-            <MenuItem value={"StartTime"}>Sắp xếp theo bắt đầu</MenuItem>
-            <MenuItem value={"EndTime"}>Sắp xếp theo kết thúc</MenuItem>
-            <MenuItem value={"EquimentpMaintainStatus"}>Sắp xếp theo trạng thái</MenuItem>
-          </TextField>
-          <TextField select size="small" value={sortDirection} onChange={(e) => setSortDirection(e.target.value as any)} sx={{ minWidth: 160 }}>
-            <MenuItem value={"Ascending"}>Tăng dần</MenuItem>
-            <MenuItem value={"Descending"}>Giảm dần</MenuItem>
-          </TextField>
-          <Button onClick={() => setCreateOpen(true)} variant="contained" color="primary" startIcon={<AddCircleOutlineIcon />}>Thêm lịch</Button>
+
+          <Button
+            onClick={() => setCreateOpen(true)}
+            variant="contained"
+            color="primary"
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            Thêm lịch
+          </Button>
         </Stack>
       </Stack>
 
@@ -195,57 +230,166 @@ export default function EquipmentMaintainSchedulesPage() {
               />
             </Box>
           ) : !isMobile ? (
-            <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
               <Table aria-label="Danh sách lịch bảo trì">
                 <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main", color: "white", "&:hover": { backgroundColor: "primary.main" } }}>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Thiết bị</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "StartTime"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("StartTime")}>
+                  <TableRow
+                    sx={{
+                      bgcolor: "primary.main",
+                      color: "white",
+                      "&:hover": { backgroundColor: "primary.main" },
+                    }}
+                  >
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Thiết bị
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "StartTime"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() => handleSortClick("StartTime")}
+                      >
                         Bắt đầu
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "EndTime"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("EndTime")}>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "EndTime"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() => handleSortClick("EndTime")}
+                      >
                         Kết thúc
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Nhiều ngày</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Cả ngày</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Số slot</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>
-                      <TableSortLabel active={sortBy === "EquimentpMaintainStatus"} direction={sortDirection === "Ascending" ? "asc" : "desc"} onClick={() => handleSortClick("EquimentpMaintainStatus")}>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Nhiều ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Cả ngày
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Số slot
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      <TableSortLabel
+                        active={sortBy === "EquimentpMaintainStatus"}
+                        direction={
+                          sortDirection === "Ascending" ? "asc" : "desc"
+                        }
+                        onClick={() =>
+                          handleSortClick("EquimentpMaintainStatus")
+                        }
+                      >
                         Trạng thái
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }}>Mô tả</TableCell>
-                    <TableCell sx={{ color: "primary.contrastText", fontWeight: 600 }} />
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    >
+                      Mô tả
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "primary.contrastText", fontWeight: 600 }}
+                    />
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {filtered.map((s) => (
-                    <TableRow key={s.id} hover sx={{ "& td": { borderBottom: "none" } }}>
+                    <TableRow
+                      key={s.id}
+                      hover
+                      sx={{ "& td": { borderBottom: "none" } }}
+                    >
                       <TableCell>
-                        <Chip label={s.equipmentId.slice(0, 8).toUpperCase()} size="small" />
+                        <Chip
+                          label={s.equipmentId.slice(0, 8).toUpperCase()}
+                          size="small"
+                        />
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{s.startTime ? new Date(s.startTime).toLocaleString() : "—"}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {s.startTime
+                            ? new Date(s.startTime).toLocaleString()
+                            : "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{s.endTime ? new Date(s.endTime).toLocaleString() : "—"}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {s.endTime
+                            ? new Date(s.endTime).toLocaleString()
+                            : "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>{s.isManyDay ? "Có" : "Không"}</TableCell>
                       <TableCell>{s.isAllDay ? "Có" : "Không"}</TableCell>
                       <TableCell>{s.numberOfSlot ?? "—"}</TableCell>
                       <TableCell>
-                        {s.equimentpMaintainStatus === "Done" ? <Chip label="Hoàn thành" color="success" size="small" /> : <Chip label="Chưa" size="small" />}
+                        {s.equimentpMaintainStatus === "Done" ? (
+                          <Chip
+                            label="Hoàn thành"
+                            color="success"
+                            size="small"
+                          />
+                        ) : (
+                          <Chip label="Chưa" size="small" />
+                        )}
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" color="text.secondary">{(s.description ?? "").length > 80 ? (s.description ?? "").slice(0, 80) + "…" : s.description}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {(s.description ?? "").length > 80
+                            ? (s.description ?? "").slice(0, 80) + "…"
+                            : s.description}
+                        </Typography>
                       </TableCell>
                       <TableCell align="right">
-                        <Button onClick={() => { setEditing(s); setEditOpen(true); }} size="small" sx={{ ml: 1 }} startIcon={<EditOutlinedIcon />}>Sửa</Button>
-                        <Button onClick={() => setConfirmDelete({ open: true, id: s.id })} size="small" sx={{ ml: 1 }} color="error" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+                        <Button
+                          onClick={() => {
+                            setEditing(s);
+                            setEditOpen(true);
+                          }}
+                          size="small"
+                          sx={{ ml: 1 }}
+                          startIcon={<EditOutlinedIcon />}
+                        >
+                          Sửa
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            setConfirmDelete({ open: true, id: s.id })
+                          }
+                          size="small"
+                          sx={{ ml: 1 }}
+                          color="error"
+                          startIcon={<DeleteOutlineIcon />}
+                        >
+                          Xóa
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -272,16 +416,61 @@ export default function EquipmentMaintainSchedulesPage() {
                   <CardContent>
                     <Stack spacing={1}>
                       <Stack direction="row" spacing={1} alignItems="center">
-                        <Chip label={s.equipmentId.slice(0, 8).toUpperCase()} size="small" />
-                        <Chip label={s.equimentpMaintainStatus ?? "NotYet"} size="small" color={s.equimentpMaintainStatus === "Done" ? "success" : "default"} />
+                        <Chip
+                          label={s.equipmentId.slice(0, 8).toUpperCase()}
+                          size="small"
+                        />
+                        <Chip
+                          label={s.equimentpMaintainStatus ?? "NotYet"}
+                          size="small"
+                          color={
+                            s.equimentpMaintainStatus === "Done"
+                              ? "success"
+                              : "default"
+                          }
+                        />
                       </Stack>
-                      <Typography variant="body2" color="text.secondary">BĐ: {s.startTime ? new Date(s.startTime).toLocaleString() : "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">KT: {s.endTime ? new Date(s.endTime).toLocaleString() : "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">Slot: {s.numberOfSlot ?? "—"}</Typography>
-                      <Typography variant="body2" color="text.secondary">{(s.description ?? "").length > 120 ? (s.description ?? "").slice(0, 120) + "…" : s.description}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        BĐ:{" "}
+                        {s.startTime
+                          ? new Date(s.startTime).toLocaleString()
+                          : "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        KT:{" "}
+                        {s.endTime ? new Date(s.endTime).toLocaleString() : "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Slot: {s.numberOfSlot ?? "—"}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {(s.description ?? "").length > 120
+                          ? (s.description ?? "").slice(0, 120) + "…"
+                          : s.description}
+                      </Typography>
                       <Box>
-                        <Button onClick={() => { setEditing(s); setEditOpen(true); }} size="small" sx={{ ml: 0 }} startIcon={<EditOutlinedIcon />}>Sửa</Button>
-                        <Button onClick={() => setConfirmDelete({ open: true, id: s.id })} size="small" sx={{ ml: 1 }} color="error" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+                        <Button
+                          onClick={() => {
+                            setEditing(s);
+                            setEditOpen(true);
+                          }}
+                          size="small"
+                          sx={{ ml: 0 }}
+                          startIcon={<EditOutlinedIcon />}
+                        >
+                          Sửa
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            setConfirmDelete({ open: true, id: s.id })
+                          }
+                          size="small"
+                          sx={{ ml: 1 }}
+                          color="error"
+                          startIcon={<DeleteOutlineIcon />}
+                        >
+                          Xóa
+                        </Button>
                       </Box>
                     </Stack>
                   </CardContent>
@@ -310,12 +499,29 @@ export default function EquipmentMaintainSchedulesPage() {
         onSaved={() => setRefreshSeq((s) => s + 1)}
       />
 
-      <Dialog open={confirmDelete.open} onClose={() => setConfirmDelete({ open: false, id: null })}>
+      <Dialog
+        open={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+      >
         <DialogTitle>Xóa lịch bảo trì</DialogTitle>
-        <DialogContent>Bạn có chắc chắn muốn xóa lịch bảo trì này?</DialogContent>
+        <DialogContent>
+          Bạn có chắc chắn muốn xóa lịch bảo trì này?
+        </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDelete({ open: false, id: null })} startIcon={<CloseIcon />}>Hủy</Button>
-          <Button onClick={handleDelete} color="error" variant="contained" startIcon={<DeleteOutlineIcon />}>Xóa</Button>
+          <Button
+            onClick={() => setConfirmDelete({ open: false, id: null })}
+            startIcon={<CloseIcon />}
+          >
+            Hủy
+          </Button>
+          <Button
+            onClick={handleDelete}
+            color="error"
+            variant="contained"
+            startIcon={<DeleteOutlineIcon />}
+          >
+            Xóa
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

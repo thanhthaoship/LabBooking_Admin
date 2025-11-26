@@ -72,8 +72,8 @@ export const navigationGroups: NavigationGroup[] = [
       {
         name: "Lịch bảo trì phòng lab",
         icon: duotone.Calender,
-        pathSegment: "lab-maintenances",
-        path: "/lab-maintenances",
+        pathSegment: "room-maintain-schedules",
+        path: "/room-maintain-schedules",
       },
       {
         name: "Lịch bảo trì thiết bị",

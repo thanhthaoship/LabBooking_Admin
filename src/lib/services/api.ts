@@ -39,6 +39,10 @@ import {
   GetAllEquipmentMaintainSchedulesQuery,
   CreateEquipmentMaintainScheduleCommand,
   UpdateEquipmentMaintainScheduleCommand,
+  RoomMaintainScheduleResponse,
+  GetAllRoomMaintainSchedulesQuery,
+  CreateRoomMaintainScheduleCommand,
+  UpdateRoomMaintainScheduleCommand,
 } from "../types";
 
 let authToken: string | null = null;
@@ -124,6 +128,13 @@ function equipmentMaintainSchedulesRoot(): string {
   if (!base) return "/api/EquipmentMaintainSchedules";
   if (base.endsWith("/api")) return `${base}/EquipmentMaintainSchedules`;
   return `${base}/api/EquipmentMaintainSchedules`;
+}
+
+function roomMaintainSchedulesRoot(): string {
+  const base = normalizeBase();
+  if (!base) return "/api/RoomMaintainSchedules";
+  if (base.endsWith("/api")) return `${base}/RoomMaintainSchedules`;
+  return `${base}/api/RoomMaintainSchedules`;
 }
 
 function authRoot(): string {
@@ -679,6 +690,81 @@ export async function deleteEquipmentMaintainSchedule(
   id: string
 ): Promise<void> {
   await request<void>(`${equipmentMaintainSchedulesRoot()}/${id}`, {
+    method: "DELETE",
+  });
+}
+
+export async function getRoomMaintainSchedules(
+  query: GetAllRoomMaintainSchedulesQuery
+): Promise<PagedResult<RoomMaintainScheduleResponse>> {
+  const qs = toQueryString({
+    SearchPhrase: query.searchPhrase,
+    Status: query.status,
+    PageNumber: query.pageNumber,
+    PageSize: query.pageSize,
+    SortBy: query.sortBy,
+    SortDirection: query.sortDirection,
+  });
+  return request<PagedResult<RoomMaintainScheduleResponse>>(
+    `${roomMaintainSchedulesRoot()}?${qs}`
+  );
+}
+
+export async function getRoomMaintainSchedule(
+  id: string
+): Promise<RoomMaintainScheduleResponse> {
+  return request<RoomMaintainScheduleResponse>(
+    `${roomMaintainSchedulesRoot()}/${id}`
+  );
+}
+
+export async function createRoomMaintainSchedule(
+  payload: CreateRoomMaintainScheduleCommand
+): Promise<string | null> {
+  const res = await fetch(roomMaintainSchedulesRoot(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let message = res.statusText;
+    try {
+      const data = await res.json();
+      message =
+        ((data as Record<string, unknown>)?.["message"] as string) ?? message;
+    } catch {}
+    const err: ApiError = { status: res.status, message };
+    throw err;
+  }
+  const location = res.headers.get("Location");
+  if (!location) {
+    try {
+      const body = await res.json();
+      const id = (body as any)?.Id ?? (body as any)?.id ?? null;
+      return id ?? null;
+    } catch {
+      return null;
+    }
+  }
+  const id = location.split("/").filter(Boolean).pop() ?? null;
+  return id;
+}
+
+export async function updateRoomMaintainSchedule(
+  id: string,
+  payload: UpdateRoomMaintainScheduleCommand
+): Promise<void> {
+  await request<void>(`${roomMaintainSchedulesRoot()}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteRoomMaintainSchedule(id: string): Promise<void> {
+  await request<void>(`${roomMaintainSchedulesRoot()}/${id}`, {
     method: "DELETE",
   });
 }
