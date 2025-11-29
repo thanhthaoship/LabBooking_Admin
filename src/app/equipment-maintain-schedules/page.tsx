@@ -196,14 +196,14 @@ export default function EquipmentMaintainSchedulesPage() {
             <MenuItem value={"Done"}>Hoàn thành</MenuItem>
           </TextField>
 
-          <Button
+          {/* <Button
             onClick={() => setCreateOpen(true)}
             variant="contained"
             color="primary"
             startIcon={<AddCircleOutlineIcon />}
           >
             Thêm lịch
-          </Button>
+          </Button> */}
         </Stack>
       </Stack>
 
@@ -367,7 +367,7 @@ export default function EquipmentMaintainSchedulesPage() {
                             : s.description}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         <Button
                           onClick={() => {
                             setEditing(s);
@@ -390,7 +390,7 @@ export default function EquipmentMaintainSchedulesPage() {
                         >
                           Xóa
                         </Button>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

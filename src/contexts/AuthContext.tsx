@@ -71,6 +71,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     payload: LoginUserCommand
   ): Promise<AuthResponse | null> => {
     const res = await apiLogin(payload);
+    console.log(res);
+
     if (res?.accessToken) {
       setAuthToken(res.accessToken);
       setToken(res.accessToken);

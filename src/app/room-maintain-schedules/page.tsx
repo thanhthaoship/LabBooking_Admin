@@ -194,7 +194,7 @@ export default function RoomMaintainSchedulesPage() {
             <MenuItem value={"NotYet"}>Chưa thực hiện</MenuItem>
             <MenuItem value={"Done"}>Hoàn thành</MenuItem>
           </TextField>
-
+          {/* 
           <Button
             onClick={() => setCreateOpen(true)}
             variant="contained"
@@ -202,7 +202,7 @@ export default function RoomMaintainSchedulesPage() {
             startIcon={<AddCircleOutlineIcon />}
           >
             Thêm lịch
-          </Button>
+          </Button> */}
         </Stack>
       </Stack>
 
@@ -364,7 +364,7 @@ export default function RoomMaintainSchedulesPage() {
                             : s.description}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         <Button
                           onClick={() => {
                             setEditing(s);
@@ -387,7 +387,7 @@ export default function RoomMaintainSchedulesPage() {
                         >
                           Xóa
                         </Button>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>
