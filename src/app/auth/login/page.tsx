@@ -150,7 +150,10 @@ export default function LoginPage() {
             item
             xs={12}
             md={6}
-            sx={{ bgcolor: "#FFE8D8", position: "relative" }}
+            sx={{
+              bgcolor: "#FFE8D8",
+              position: "relative",
+            }}
           >
             <Box sx={{ px: { xs: 3, md: 6 }, py: { xs: 4, md: 6 } }}>
               <Typography
@@ -177,6 +180,7 @@ export default function LoginPage() {
                 position: "absolute",
                 right: { xs: 16, md: 40 },
                 bottom: { xs: 16, md: 24 },
+                display: { xs: "none", md: "block" },
               }}
             >
               <Image
