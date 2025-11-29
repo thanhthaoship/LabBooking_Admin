@@ -1,23 +1,6 @@
 "use client";
 
 import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Grid,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import duotone from "@components/icons/duotone";
-import { useAuth } from "@contexts/AuthContext";
-import {
   getEquipments,
   getIncidents,
   getLabRooms,
@@ -32,10 +15,26 @@ import {
   GetAllNotificationsQuery,
   LabRoomResponse,
   NotificationsResponse,
-  IncidentsResponse,
   PagedResult,
   SlotResponse,
 } from "@/lib/types";
+import duotone from "@components/icons/duotone";
+import { useAuth } from "@contexts/AuthContext";
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Grid,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
 type StatItem = {
   label: string;
@@ -58,8 +57,6 @@ export default function DashboardPage() {
   const [slots, setSlots] = useState<SlotResponse[] | null>(null);
   const [notifications, setNotifications] =
     useState<PagedResult<NotificationsResponse> | null>(null);
-  const [incidents, setIncidents] =
-    useState<PagedResult<IncidentsResponse> | null>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -94,21 +91,28 @@ export default function DashboardPage() {
       sortDirection: "Descending",
     };
 
-    Promise.all([
+    Promise.allSettled([
       getLabRooms(labQuery),
       getEquipments(eqQuery),
       getSlots(),
       getNotifications(notiQuery),
       getIncidents(incQuery),
     ])
-      .then(([labs, eqs, sl, notis, inc]) => {
-        setLabRooms(labs);
-        setEquipments(eqs);
-        setSlots(sl);
-        setNotifications(notis);
-        setIncidents(inc);
+      .then((results) => {
+        const failed: string[] = [];
+        const [labsRes, eqsRes, slotsRes, notisRes, incRes] = results;
+        if (labsRes.status === "fulfilled") setLabRooms(labsRes.value);
+        else failed.push("Phòng Lab");
+        if (eqsRes.status === "fulfilled") setEquipments(eqsRes.value);
+        else failed.push("Thiết bị");
+        if (slotsRes.status === "fulfilled") setSlots(slotsRes.value);
+        else failed.push("Slot");
+        if (notisRes.status === "fulfilled") setNotifications(notisRes.value);
+        else failed.push("Thông báo");
+
+        if (failed.length > 0)
+          setError(`Không thể tải dữ liệu: ${failed.join(", ")}`);
       })
-      .catch((e) => setError(e?.message ?? "Không thể tải dữ liệu"))
       .finally(() => setLoading(false));
   }, []);
 
@@ -297,58 +301,6 @@ export default function DashboardPage() {
                       sx={{ color: "text.secondary" }}
                     >
                       Không có thông báo
-                    </Typography>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <Card sx={{ borderRadius: 2 }}>
-                <CardContent>
-                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                    Sự cố gần đây
-                  </Typography>
-                  <Divider sx={{ my: 1 }} />
-                  {loading ? (
-                    <Stack spacing={1}>
-                      <Skeleton variant="text" height={24} />
-                      <Skeleton variant="text" height={24} />
-                      <Skeleton variant="text" height={24} />
-                    </Stack>
-                  ) : incidents && incidents.items.length > 0 ? (
-                    <Stack spacing={1}>
-                      {incidents.items.map((i) => (
-                        <Stack
-                          key={i.id}
-                          direction="row"
-                          spacing={1}
-                          alignItems="center"
-                          sx={{ py: 0.5 }}
-                        >
-                          <Chip
-                            size="small"
-                            label={i.isResolved ? "Đã xử lý" : "Đang mở"}
-                            color={i.isResolved ? "success" : "error"}
-                          />
-                          <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                            {i.type}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            sx={{ color: "text.secondary" }}
-                          >
-                            {i.description}
-                          </Typography>
-                        </Stack>
-                      ))}
-                    </Stack>
-                  ) : (
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "text.secondary" }}
-                    >
-                      Không có sự cố
                     </Typography>
                   )}
                 </CardContent>

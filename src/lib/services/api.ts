@@ -196,7 +196,11 @@ async function request<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const hasBody = res.status !== 204;
   if (!hasBody) return undefined as unknown as T;
   const ct = res.headers.get("content-type") ?? "";
-  if (ct.includes("application/json")) return (await res.json()).data as T;
+  if (ct.includes("application/json")) {
+    const json = await res.json();
+    const hasData = json && typeof json === "object" && Object.prototype.hasOwnProperty.call(json, "data");
+    return (hasData ? (json.data as T) : (json as T));
+  }
   return (await res.text()) as unknown as T;
 }
 
