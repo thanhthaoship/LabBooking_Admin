@@ -149,6 +149,22 @@ export default function DashboardPage() {
     ];
   }, [labRooms, equipments, notifications, slots]);
 
+  const mostBookedLab = useMemo(() => {
+    const items = labRooms?.items ?? [];
+    if (items.length === 0) return null;
+    let top = items[0];
+    let topCount = Number(top.bookingsCount ?? 0);
+    for (let i = 1; i < items.length; i++) {
+      const it = items[i];
+      const cnt = Number(it.bookingsCount ?? 0);
+      if (cnt > topCount) {
+        top = it;
+        topCount = cnt;
+      }
+    }
+    return { room: top, count: topCount };
+  }, [labRooms]);
+
   return (
     <Box sx={{ px: { xs: 2, md: 4 }, py: 3 }}>
       <Stack spacing={3}>
@@ -255,7 +271,7 @@ export default function DashboardPage() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <Card sx={{ borderRadius: 2 }}>
                 <CardContent>
                   <Typography variant="h6" sx={{ fontWeight: 700 }}>
@@ -306,6 +322,49 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </Grid>
+            {/* <Grid item xs={12} sm={6}>
+              <Card sx={{ borderRadius: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    Phòng đặt nhiều nhất
+                  </Typography>
+                  <Divider sx={{ my: 1 }} />
+                  {loading ? (
+                    <Stack spacing={1}>
+                      <Skeleton variant="text" height={24} />
+                      <Skeleton variant="text" height={24} />
+                    </Stack>
+                  ) : mostBookedLab ? (
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                        {mostBookedLab.room.labName ||
+                          mostBookedLab.room.id.slice(0, 8).toUpperCase()}
+                      </Typography>
+                      <Chip
+                        label={`${mostBookedLab.count} lượt đặt`}
+                        size="small"
+                        color="primary"
+                      />
+                      <Button
+                        component={Link}
+                        href={`/lab-rooms/${mostBookedLab.room.id}`}
+                        size="small"
+                        sx={{ ml: 1 }}
+                      >
+                        Xem chi tiết
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      Chưa có dữ liệu đặt phòng
+                    </Typography>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid> */}
           </Grid>
         </Stack>
       </Stack>

@@ -23,6 +23,7 @@ export interface LabRoomResponse {
   createdDate: string;
   isActive: boolean;
   equipments?: EquipmentResponse[] | null;
+  bookingsCount?: number | null;
 }
 
 export interface PagedResult<T> {
